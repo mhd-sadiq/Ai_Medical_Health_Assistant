@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% block title %}Home | AI Health Assistant{% endblock %}
+{% block content %}
+
+<!-- Modern Professional Dark Theme -->
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #101820;
+    color: #f0f2f5;
+  }
+
+  .main-heading-section {
+    background: linear-gradient(135deg, #102b3f, #1f4c5c);
+    color: #ffffff;
+    padding: 40px 0 30px;
+    text-align: center;
+    border-radius: 0 0 30px 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    margin-bottom: 20px;
+  }
+
+  .main-heading-section h1 {
+    font-size: 2.6rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+  }
+
+  .main-heading-section p {
+    font-size: 1.1rem;
+    color: #cfd8dc;
+    max-width: 720px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 2.3rem;
+    font-weight: 700;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  hr.section-divider {
+    border: none;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    width: 80%;
+    margin: 10px auto 30px;
+  }
+
+  .card {
+    border: none;
+    border-radius: 20px;
+    padding: 25px;
+    height: 100%;
+    color: #ffffff;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .card-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+
+  .card-text {
+    font-size: 1rem;
+    opacity: 0.9;
+    line-height: 1.5;
+  }
+
+  .card a.btn {
+    font-weight: 600;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border-radius: 25px;
+    margin-top: 15px;
+    border: 2px solid #fff;
+    color: #fff;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+
+  .card a.btn:hover {
+    background-color: #ffffff;
+    color: #1a1a1a;
+    text-decoration: none;
+  }
+
+  .card-symptom {
+    background: linear-gradient(135deg, #4e54c8, #8f94fb);
+  }
+
+  .card-diet {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+  }
+
+  .card-chat {
+    background: linear-gradient(135deg, #3c3b3f, #605c3c);
+  }
+
+  .card-emergency {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  }
+
+  @media (max-width: 768px) {
+    .main-heading-section h1 {
+      font-size: 2.2rem;
+    }
+
+    .main-heading-section p {
+      font-size: 1rem;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+    }
+  }
+</style>
+
+<!-- Welcome Section -->
+<section class="main-heading-section">
+  <div class="container">
+    <h1>Welcome to AI Health Assistant</h1>
+    <p>
+      An intelligent health companion that helps you check symptoms, get personalized diet advice, access emergency support, and chat with an AI anytime. We simplify healthcare through smart and accessible technology.
+    </p>
+  </div>
+</section>
+
+<!-- Divider -->
+<hr class="section-divider">
+
+<!-- Our Services Section -->
+<section class="pb-5">
+  <div class="container">
+    <h2 class="section-title">Our Services</h2>
+    <div class="row g-4 text-center">
+      <!-- Symptom Checker -->
+      <div class="col-md-3">
+        <div class="card card-symptom">
+          <div class="card-body">
+            <h5 class="card-title">🩺 Symptom Checker</h5>
+            <p class="card-text">AI-powered analysis for your symptoms to guide your next steps.</p>
+            <a href="/symptom" class="btn">Check Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Diet Tips -->
+      <div class="col-md-3">
+        <div class="card card-diet">
+          <div class="card-body">
+            <h5 class="card-title">🥗 Diet Tips</h5>
+            <p class="card-text">Personalized dietary advice based on your health goals and needs.</p>
+            <a href="/diet" class="btn">Get Tips</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Health Chat -->
+      <div class="col-md-3">
+        <div class="card card-chat">
+          <div class="card-body">
+            <h5 class="card-title">💬 Health Chat</h5>
+            <p class="card-text">Chat with our AI for instant responses to your health-related queries.</p>
+            <a href="/chat" class="btn">Start Chat</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Emergency Resources -->
+      <div class="col-md-3">
+        <div class="card card-emergency">
+          <div class="card-body">
+            <h5 class="card-title">🚨 Emergency Resources</h5>
+            <p class="card-text">Get instant access to emergency tools and vital health resources.</p>
+            <a href="/emergency" class="btn">View Resources</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
