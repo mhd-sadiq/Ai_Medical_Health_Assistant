@@ -13,8 +13,6 @@ This project is an **AI Medical Health Assistant** that aims to provide a friend
 * Basic medical guidance
 * Placeholder for emergency instructions
 
-> ⚠️ Note: This application is **not a substitute for professional healthcare advice**.
-
 ---
 
 ## 🎯 Project Objectives
