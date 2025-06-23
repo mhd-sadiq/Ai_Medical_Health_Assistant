@@ -1,0 +1,11 @@
+{% if chat_history %}
+    <ul>
+        {% for chat in chat_history %}
+            <li>
+                <strong>{{ chat.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</strong>: {{ chat.message }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No chat history for Diet Tips yet.</p>
+{% endif %} 

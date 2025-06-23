@@ -1,0 +1,551 @@
+{% extends 'base.html' %}
+{% block title %}Pill Reminder{% endblock %}
+{% block content %}
+
+<style>
+.pill-reminder-bg {
+  background: #181a1b;
+  min-height: 100vh;
+  padding: 0 0 60px 0;
+}
+
+.top-section-pill {
+  background: #1a233a !important;
+  padding: 48px 20px 28px 20px;
+  border-radius: 18px 18px 0 0;
+  margin: 100px auto 0 auto;
+  width: 95%;
+  max-width: 800px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  margin-bottom: 0;
+}
+
+.top-section-pill h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.top-section-pill p {
+  font-size: 1.13rem;
+  color: #e3e3fa;
+  margin-bottom: 0;
+}
+
+.pill-reminder-container {
+  width: 95%;
+  max-width: 800px;
+  margin: 20px auto;
+  background: #1a233a !important;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+  padding: 40px 30px;
+  animation: fadeIn 0.4s;
+  color: #fff;
+}
+
+.add-reminder-form {
+  background: #1e2128;
+  border-radius: 18px;
+  padding: 32px;
+  margin-bottom: 30px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #90caf9;
+  font-size: 1.1rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #2c3e50;
+  border-radius: 12px;
+  background: #23272b;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #00bcd4;
+  box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.1);
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #00bcd4 0%, #0097a7 100%);
+  border: none;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 188, 212, 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 188, 212, 0.3);
+}
+
+.reminders-list {
+  background: #1e2128;
+  border-radius: 18px;
+  padding: 32px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.reminder-card {
+  background: #23272b;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border-left: 4px solid #00bcd4;
+  transition: all 0.3s ease;
+}
+
+.reminder-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.reminder-card.inactive {
+  border-left-color: #6c757d;
+  opacity: 0.7;
+}
+
+.reminder-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.reminder-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #90caf9;
+  margin: 0;
+}
+
+.reminder-status {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-active {
+  background: #28a745;
+  color: #fff;
+}
+
+.status-inactive {
+  background: #6c757d;
+  color: #fff;
+}
+
+.reminder-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #adb5bd;
+  font-size: 0.9rem;
+}
+
+.detail-value {
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.reminder-notes {
+  background: #2c3e50;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 12px;
+  font-style: italic;
+  color: #bdc3c7;
+}
+
+.reminder-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-success {
+  background: #28a745;
+  color: #fff;
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: #fff;
+}
+
+.btn-warning {
+  background: #ffc107;
+  color: #212529;
+}
+
+.btn-sm:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6c757d;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  color: #495057;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  color: #adb5bd;
+}
+
+.empty-state p {
+  font-size: 1rem;
+  color: #6c757d;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .reminder-details {
+    grid-template-columns: 1fr;
+  }
+  
+  .reminder-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .reminder-actions {
+    flex-wrap: wrap;
+  }
+}
+</style>
+
+<div class="pill-reminder-bg">
+  <div class="top-section-pill">
+    <h2>💊 Pill Reminder</h2>
+    <p>Manage your medication schedule and never miss a dose</p>
+  </div>
+
+  <div class="pill-reminder-container">
+    <!-- Add New Reminder Form -->
+    <div class="add-reminder-form">
+      <h3 style="color: #90caf9; margin-bottom: 24px; font-size: 1.5rem;">
+        <i class="bi bi-plus-circle me-2"></i>Add New Pill Reminder
+      </h3>
+      
+      <form method="POST">
+        <input type="hidden" name="action" value="add">
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Pill Name *</label>
+              <input type="text" name="pill_name" class="form-control" placeholder="e.g., Aspirin, Vitamin D" required>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Dosage *</label>
+              <input type="text" name="dosage" class="form-control" placeholder="e.g., 100mg, 1 tablet" required>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Frequency *</label>
+              <select name="frequency" class="form-control" required>
+                <option value="">Select frequency</option>
+                <option value="daily">Daily</option>
+                <option value="twice daily">Twice Daily</option>
+                <option value="three times daily">Three Times Daily</option>
+                <option value="every 4 hours">Every 4 Hours</option>
+                <option value="every 6 hours">Every 6 Hours</option>
+                <option value="every 8 hours">Every 8 Hours</option>
+                <option value="every 12 hours">Every 12 Hours</option>
+                <option value="weekly">Weekly</option>
+                <option value="as needed">As Needed</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Time of Day</label>
+              <select name="time_of_day" class="form-control">
+                <option value="">Select time (optional)</option>
+                <option value="morning">Morning</option>
+                <option value="afternoon">Afternoon</option>
+                <option value="evening">Evening</option>
+                <option value="bedtime">Bedtime</option>
+                <option value="before meals">Before Meals</option>
+                <option value="after meals">After Meals</option>
+                <option value="with meals">With Meals</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <small class="text-info">You can set either a general time of day, an exact time, or both. At least one is required.</small>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Exact Time</label>
+              <input type="time" name="exact_time" class="form-control" placeholder="e.g., 08:00">
+              <small class="text-info">Time is in IST (Manjeri, Kerala). 12-hour format will be shown in reminders.</small>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Start Date *</label>
+              <input type="date" name="start_date" class="form-control" required>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">End Date (Optional)</label>
+              <input type="date" name="end_date" class="form-control">
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Notes (Optional)</label>
+          <textarea name="notes" class="form-control" rows="3" placeholder="Any additional notes about this medication..."></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-plus-circle me-2"></i>Add Reminder
+        </button>
+      </form>
+    </div>
+
+    <!-- Reminders List -->
+    <div class="reminders-list">
+      <h3 style="color: #90caf9; margin-bottom: 24px; font-size: 1.5rem;">
+        <i class="bi bi-list-check me-2"></i>Your Pill Reminders
+      </h3>
+      
+      {% if reminders %}
+        {% for reminder in reminders %}
+          <div class="reminder-card {% if not reminder.is_active %}inactive{% endif %}">
+            <div class="reminder-header">
+              <h4 class="reminder-title">{{ reminder.pill_name }}</h4>
+              <span class="reminder-status {% if reminder.is_active %}status-active{% else %}status-inactive{% endif %}">
+                {% if reminder.is_active %}Active{% else %}Inactive{% endif %}
+              </span>
+            </div>
+            
+            <div class="reminder-details">
+              <div class="detail-item">
+                <span class="detail-label"><i class="bi bi-capsule me-1"></i>Dosage:</span>
+                <span class="detail-value">{{ reminder.dosage }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label"><i class="bi bi-clock me-1"></i>Frequency:</span>
+                <span class="detail-value">{{ reminder.frequency }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label"><i class="bi bi-sun me-1"></i>Time:</span>
+                <span class="detail-value">
+                  {% if reminder.exact_time and reminder.time_of_day %}
+                    {{ reminder.time_of_day }} at {{ reminder.exact_time.strftime('%I:%M %p') }} IST
+                  {% elif reminder.exact_time %}
+                    {{ reminder.exact_time.strftime('%I:%M %p') }} IST
+                  {% elif reminder.time_of_day %}
+                    {{ reminder.time_of_day }}
+                  {% else %}
+                    <span class="text-muted">Not set</span>
+                  {% endif %}
+                </span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label"><i class="bi bi-calendar me-1"></i>Start:</span>
+                <span class="detail-value">{{ reminder.start_date.strftime('%B %d, %Y') }}</span>
+              </div>
+              {% if reminder.end_date %}
+                <div class="detail-item">
+                  <span class="detail-label"><i class="bi bi-calendar-x me-1"></i>End:</span>
+                  <span class="detail-value">{{ reminder.end_date.strftime('%B %d, %Y') }}</span>
+                </div>
+              {% endif %}
+            </div>
+            
+            {% if reminder.notes %}
+              <div class="reminder-notes">
+                <i class="bi bi-chat-text me-1"></i>{{ reminder.notes }}
+              </div>
+            {% endif %}
+            
+            <div class="reminder-actions">
+              <form method="POST" style="display: inline;">
+                <input type="hidden" name="action" value="toggle">
+                <input type="hidden" name="reminder_id" value="{{ reminder.id }}">
+                <button type="submit" class="btn btn-sm {% if reminder.is_active %}btn-warning{% else %}btn-success{% endif %}">
+                  {% if reminder.is_active %}
+                    <i class="bi bi-pause-circle me-1"></i>Pause
+                  {% else %}
+                    <i class="bi bi-play-circle me-1"></i>Activate
+                  {% endif %}
+                </button>
+              </form>
+              
+              <form method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this reminder?');">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="reminder_id" value="{{ reminder.id }}">
+                <button type="submit" class="btn btn-sm btn-danger">
+                  <i class="bi bi-trash me-1"></i>Delete
+                </button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty-state">
+          <i class="bi bi-capsule"></i>
+          <h3>No Pill Reminders Yet</h3>
+          <p>Add your first pill reminder above to start managing your medication schedule.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+// Set default start date to today
+document.addEventListener('DOMContentLoaded', function() {
+    const startDateInput = document.querySelector('input[name="start_date"]');
+    if (startDateInput && !startDateInput.value) {
+        const today = new Date().toISOString().split('T')[0];
+        startDateInput.value = today;
+    }
+
+    // --- Pill Reminder Notification Logic ---
+    // Get reminders from template context (inject as JSON)
+    const reminders = [
+        {% for reminder in reminders %}
+        {
+            id: {{ reminder.id }},
+            pill_name: "{{ reminder.pill_name|e }}",
+            dosage: "{{ reminder.dosage|e }}",
+            is_active: {{ 'true' if reminder.is_active else 'false' }},
+            exact_time: {% if reminder.exact_time %}"{{ reminder.exact_time.strftime('%H:%M') }}"{% else %}null{% endif %},
+            start_date: "{{ reminder.start_date.strftime('%Y-%m-%d') }}",
+            end_date: {% if reminder.end_date %}"{{ reminder.end_date.strftime('%Y-%m-%d') }}"{% else %}null{% endif %}
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    // Request notification permission if not already granted
+    if (window.Notification && Notification.permission !== 'granted') {
+        Notification.requestPermission();
+    }
+
+    // Helper to check if today is within start/end date
+    function isTodayInRange(start, end) {
+        const today = new Date();
+        const startDate = new Date(start);
+        if (end) {
+            const endDate = new Date(end);
+            return today >= startDate && today <= endDate;
+        }
+        return today >= startDate;
+    }
+
+    // Track notified reminders to avoid duplicate notifications in the same session
+    const notified = new Set();
+
+    function checkReminders() {
+        const now = new Date();
+        const nowHM = now.toTimeString().slice(0,5); // 'HH:MM'
+        const todayStr = now.toISOString().slice(0,10); // 'YYYY-MM-DD'
+        reminders.forEach(rem => {
+            if (!rem.is_active || !rem.exact_time) return;
+            if (!isTodayInRange(rem.start_date, rem.end_date)) return;
+            if (notified.has(rem.id + '-' + todayStr + '-' + rem.exact_time)) return;
+            if (rem.exact_time === nowHM) {
+                // Show notification
+                const title = 'Pill Reminder: ' + rem.pill_name;
+                const body = 'Time to take ' + rem.pill_name + ' (' + rem.dosage + ')';
+                if (window.Notification && Notification.permission === 'granted') {
+                    new Notification(title, { body: body, icon: '/static/uploads/pill_icon.png' });
+                } else {
+                    alert(title + '\n' + body);
+                }
+                notified.add(rem.id + '-' + todayStr + '-' + rem.exact_time);
+            }
+        });
+    }
+
+    // Check every minute
+    setInterval(checkReminders, 60000);
+    // Also check immediately on load
+    checkReminders();
+});
+</script>
+
+{% endblock %} 

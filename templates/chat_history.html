@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .chat-sections {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .section-container {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .section-title {
+            margin: 0;
+            color: #333;
+        }
+        .clear-section {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .clear-section:hover {
+            background: #cc0000;
+        }
+        .chat-history {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+        }
+        .chat-message {
+            background: #e3f2fd;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border-left: 4px solid #2196f3;
+        }
+        .chat-message p {
+            margin: 0 0 5px 0;
+        }
+        .chat-message small {
+            color: #666;
+            font-size: 12px;
+        }
+        .navigation {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .navigation a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px 20px;
+            background: #2196f3;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .navigation a:hover {
+            background: #1976d2;
+        }
+        .empty-section {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-sections">
+        <h1>Your Chat History</h1>
+        
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Diet Tips Chat</h2>
+                <form action="{{ url_for('clear_chat_history') }}" method="POST" style="display: inline;">
+                    <input type="hidden" name="section" value="diet_tips">
+                    <button type="submit" class="clear-section">Clear History</button>
+                </form>
+            </div>
+            <div class="chat-history">
+                {% if chat_history.get('diet_tips') %}
+                    {% for chat in chat_history['diet_tips'] %}
+                        <div class="chat-message">
+                            <p>{{ chat.message }}</p>
+                            <small>{{ chat.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-section">No chat history for Diet Tips</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Symptoms Chat</h2>
+                <form action="{{ url_for('clear_chat_history') }}" method="POST" style="display: inline;">
+                    <input type="hidden" name="section" value="symptoms">
+                    <button type="submit" class="clear-section">Clear History</button>
+                </form>
+            </div>
+            <div class="chat-history">
+                {% if chat_history.get('symptoms') %}
+                    {% for chat in chat_history['symptoms'] %}
+                        <div class="chat-message">
+                            <p>{{ chat.message }}</p>
+                            <small>{{ chat.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-section">No chat history for Symptoms</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">General Health Chat</h2>
+                <form action="{{ url_for('clear_chat_history') }}" method="POST" style="display: inline;">
+                    <input type="hidden" name="section" value="general_health">
+                    <button type="submit" class="clear-section">Clear History</button>
+                </form>
+            </div>
+            <div class="chat-history">
+                {% if chat_history.get('general_health') %}
+                    {% for chat in chat_history['general_health'] %}
+                        <div class="chat-message">
+                            <p>{{ chat.message }}</p>
+                            <small>{{ chat.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-section">No chat history for General Health</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">BMI Chat</h2>
+                <form action="{{ url_for('clear_chat_history') }}" method="POST" style="display: inline;">
+                    <input type="hidden" name="section" value="bmi">
+                    <button type="submit" class="clear-section">Clear History</button>
+                </form>
+            </div>
+            <div class="chat-history">
+                {% if chat_history.get('bmi') %}
+                    {% for chat in chat_history['bmi'] %}
+                        <div class="chat-message">
+                            <p>{{ chat.message }}</p>
+                            <small>{{ chat.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-section">No chat history for BMI</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="{{ url_for('diet_tips_chat') }}">Go to Diet Tips Chat</a>
+            <a href="{{ url_for('symptoms_chat') }}">Go to Symptoms Chat</a>
+            <a href="{{ url_for('general_health_chat') }}">Go to General Health Chat</a>
+            <a href="{{ url_for('bmi_chat') }}">Go to BMI Chat</a>
+        </div>
+    </div>
+</body>
+</html> 

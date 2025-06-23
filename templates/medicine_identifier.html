@@ -1,0 +1,32 @@
+<!-- Chat History Section -->
+<!-- (Removed: Collapsible chat history, clear history button, and chat message display) -->
+
+<!-- The rest of the template remains unchanged, keep upload form, uploaded image, and AI result display. -->
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- Chat History Toggle Script -->
+<script>
+function toggleHistory() {
+  const historyDiv = document.getElementById('chatHistory');
+  const button = document.querySelector('.history-toggle');
+  if (historyDiv.style.display === 'none') {
+    historyDiv.style.display = 'block';
+    button.classList.add('active');
+    button.textContent = 'Hide Chat History';
+    button.insertAdjacentHTML('afterbegin', '<i class="fas fa-history"></i> ');
+  } else {
+    historyDiv.style.display = 'none';
+    button.classList.remove('active');
+    button.textContent = 'View Chat History';
+    button.insertAdjacentHTML('afterbegin', '<i class="fas fa-history"></i> ');
+  }
+}
+</script>
+
+<div class="container py-5">
+    <!-- ... existing code ...
+</div>
+
+<!-- ... existing code ... 

@@ -1,0 +1,8 @@
+Flask
+python-dotenv
+geopy
+google-generativeai
+Flask-SQLAlchemy
+Flask-Login
+pytesseract
+pillow

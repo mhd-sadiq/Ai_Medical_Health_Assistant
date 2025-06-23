@@ -1,0 +1,359 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+    <!-- User Management Actions Section -->
+    <div class="card shadow-lg bg-dark text-light mb-4" style="border-radius: 18px;">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="card-title mb-0" style="font-weight: 700; letter-spacing: 1px; color: #fff;">
+                    <i class="bi bi-people-fill text-info me-2"></i>User Management
+                </h4>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-success fw-bold px-4 py-2 d-flex align-items-center shadow-sm" type="button" data-bs-toggle="collapse" data-bs-target="#addUserForm" aria-expanded="false" aria-controls="addUserForm" style="border-radius: 30px; font-size: 1.08rem; box-shadow: 0 2px 12px rgba(40,167,69,0.13); transition: box-shadow 0.2s;">
+                        <i class="bi bi-person-plus-fill me-2 fs-5"></i> Add New User
+                    </button>
+                    <button class="btn btn-warning fw-bold px-4 py-2 d-flex align-items-center shadow-sm" type="button" data-bs-toggle="collapse" data-bs-target="#promoteUserForm" aria-expanded="false" aria-controls="promoteUserForm" style="border-radius: 30px; font-size: 1.08rem; box-shadow: 0 2px 12px rgba(255,193,7,0.13); transition: box-shadow 0.2s;">
+                        <i class="bi bi-shield-check me-2 fs-5"></i> Promote to Admin
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Add New User Form -->
+            <div class="collapse mb-3" id="addUserForm">
+                <div class="card bg-secondary bg-opacity-10 border-success">
+                    <div class="card-header text-success">
+                        <h5 class="mb-0"><i class="bi bi-person-plus"></i> Add New User</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ url_for('add_user') }}" method="post">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label text-light">Full Name</label>
+                                    <input type="text" class="form-control bg-dark text-light border-secondary" id="name" name="name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label text-light">Email Address</label>
+                                    <input type="email" class="form-control bg-dark text-light border-secondary" id="email" name="email" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="password" class="form-label text-light">Password</label>
+                                    <input type="password" class="form-control bg-dark text-light border-secondary" id="password" name="password" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="confirm_password" class="form-label text-light">Confirm Password</label>
+                                    <input type="password" class="form-control bg-dark text-light border-secondary" id="confirm_password" name="confirm_password" required>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="is_admin" name="is_admin">
+                                        <label class="form-check-label text-light" for="is_admin">
+                                            Make this user an admin
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-success fw-bold px-4 py-2">
+                                        <i class="bi bi-person-plus-fill me-2"></i>Create User
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Promote User to Admin Form -->
+            <div class="collapse mb-3" id="promoteUserForm">
+                <div class="card bg-secondary bg-opacity-10 border-warning">
+                    <div class="card-header text-warning">
+                        <h5 class="mb-0"><i class="bi bi-shield-check"></i> Promote User to Admin</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ url_for('promote_user') }}" method="post">
+                            <div class="row g-3">
+                                <div class="col-md-8">
+                                    <label for="user_email" class="form-label text-light">Select User by Email</label>
+                                    <select class="form-select bg-dark text-light border-secondary" id="user_email" name="user_email" required>
+                                        <option value="">Choose a user...</option>
+                                        {% for user in users %}
+                                            {% if not user.is_admin and not user.is_superuser %}
+                                                <option value="{{ user.email }}">{{ user.name }} ({{ user.email }})</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label text-light">&nbsp;</label>
+                                    <button type="submit" class="btn btn-warning fw-bold px-4 py-2 d-block w-100">
+                                        <i class="bi bi-shield-check me-2"></i>Promote to Admin
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-2 p-3" style="gap: 1rem; background: #fff; border-radius: 18px 18px 0 0; box-shadow: 0 2px 12px rgba(0,0,0,0.06);">
+        <h2 class="card-title mb-0" style="font-weight: 700; letter-spacing: 1px; color: #181a1b;"><i class="bi bi-shield-lock-fill text-primary me-2"></i>Admin Dashboard <span class="badge bg-secondary">v2.0</span></h2>
+        <button class="btn btn-info fw-bold px-4 py-2 d-flex align-items-center shadow-sm" type="button" data-bs-toggle="collapse" data-bs-target="#donorsTableCollapse" aria-expanded="false" aria-controls="donorsTableCollapse" style="min-width:220px; border-radius: 30px; font-size: 1.08rem; box-shadow: 0 2px 12px rgba(0,188,212,0.13); transition: box-shadow 0.2s;">
+            <i class="bi bi-people-fill me-2 fs-5"></i> View All Blood Donors
+        </button>
+    </div>
+    <div class="collapse mb-4 animated fadeIn" id="donorsTableCollapse">
+        <div class="card shadow-lg bg-dark text-light border-info" style="border-radius: 18px;">
+            <div class="card-body">
+                <div class="border-bottom border-info pb-2 mb-3">
+                    <h4 class="card-title text-info text-center mb-0" style="font-weight:700; letter-spacing: 1px;"><i class="bi bi-droplet-fill me-2"></i>Registered Blood Donors</h4>
+                </div>
+                {% if blood_donors %}
+                <div class="table-responsive">
+                    <table class="table table-dark table-striped table-hover align-middle rounded" style="border-radius: 12px; overflow: hidden;">
+                        <thead class="table-info text-dark">
+                            <tr>
+                                <th>Name</th>
+                                <th>Blood Group</th>
+                                <th>Location</th>
+                                <th>Contact</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for donor in blood_donors %}
+                            <tr>
+                                <td>{{ donor.name }}</td>
+                                <td>{{ donor.blood_group }}</td>
+                                <td>{{ donor.location }}</td>
+                                <td>{{ donor.contact }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-muted text-center">No blood donors registered yet.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="card shadow-lg bg-dark text-light" style="margin: 0 auto;">
+        <div class="card-body">
+            <h5 class="mb-4">Total Users: <span class="badge bg-info text-dark">{{ total_users }}</span></h5>
+            <div class="table-responsive">
+                <table class="table table-dark table-striped table-hover align-middle border rounded">
+                    <thead class="table-primary text-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Admin</th>
+                            <th>Superuser</th>
+                            <th>Blocked</th>
+                            <th>Actions</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                {% if user.is_admin %}
+                                    <span class="badge bg-success">Yes</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">No</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user.is_superuser %}
+                                    <span class="badge bg-info text-dark">Yes</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">No</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user.is_blocked %}
+                                    <span class="badge bg-danger">Yes</span>
+                                {% else %}
+                                    <span class="badge bg-success">No</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2 flex-nowrap">
+                                    {% if user.id != current_user.id %}
+                                        {% if not user.is_blocked %}
+                                        <form action="{{ url_for('block_user', user_id=user.id) }}" method="post" class="mb-0">
+                                            <button class="btn btn-warning btn-sm" type="submit"><i class="bi bi-slash-circle"></i> Block</button>
+                                        </form>
+                                        {% else %}
+                                        <form action="{{ url_for('unblock_user', user_id=user.id) }}" method="post" class="mb-0">
+                                            <button class="btn btn-success btn-sm" type="submit"><i class="bi bi-check-circle"></i> Unblock</button>
+                                        </form>
+                                        {% endif %}
+                                        
+                                        <form action="{{ url_for('delete_user', user_id=user.id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this user?');" class="mb-0">
+                                            <button class="btn btn-danger btn-sm" type="submit"><i class="bi bi-trash"></i> Delete</button>
+                                        </form>
+                                        
+                                        {% if user.is_admin and not user.is_superuser %}
+                                        <form action="{{ url_for('demote_user', user_id=user.id) }}" method="post" onsubmit="return confirm('Are you sure you want to demote this user from admin?');" class="mb-0">
+                                            <button class="btn btn-secondary btn-sm" type="submit"><i class="bi bi-shield-x"></i> Demote</button>
+                                        </form>
+                                        {% elif not user.is_admin %}
+                                        <form action="{{ url_for('promote_user_admin', user_id=user.id) }}" method="post" onsubmit="return confirm('Are you sure you want to promote this user to admin?');" class="mb-0">
+                                            <button class="btn btn-info btn-sm" type="submit"><i class="bi bi-shield-check"></i> Promote</button>
+                                        </form>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="text-muted small">(You)</span>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-info btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#userDetails{{ user.id }}" aria-expanded="false" aria-controls="userDetails{{ user.id }}">
+                                    View
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="collapse" id="userDetails{{ user.id }}">
+                            <td colspan="8">
+                                <div class="p-3 bg-secondary bg-opacity-10 rounded">
+                                    <h6>Login History ({{ login_histories[user.id]|length }} logins):</h6>
+                                    <ul>
+                                        {% for login in login_histories[user.id] %}
+                                            <li>{{ login.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</li>
+                                        {% else %}
+                                            <li>No login history.</li>
+                                        {% endfor %}
+                                    </ul>
+                                    <h6>Chat History:</h6>
+                                    <div class="row g-3">
+                                        {% set chat_types = [
+                                            ('general_health', 'General Health Chat', 'bi-heart-pulse'),
+                                            ('diet_tips', 'Diet Tips Chat', 'bi-egg-fried'),
+                                            ('symptom_checker', 'Symptom Checker Chat', 'bi-thermometer-half'),
+                                            ('bmi_calculator', 'BMI Calculator Chat', 'bi-calculator')
+                                        ] %}
+                                        {% for chat_key, chat_label, chat_icon in chat_types %}
+                                        <div class="col-md-6">
+                                            <div class="card mb-3 bg-dark border-info">
+                                                <div class="card-header text-info">
+                                                    <i class="bi {{ chat_icon }}"></i> {{ chat_label }}
+                                                </div>
+                                                <div class="card-body" style="max-height: 250px; overflow-y: auto;">
+                                                    {% if chat_key == 'blood_donor' and blood_donor_registration[user.id] %}
+                                                        <div class="mb-2 p-2 rounded bg-secondary bg-opacity-25">
+                                                            <strong>Registration Details:</strong><br>
+                                                            Name: {{ blood_donor_registration[user.id].name }}<br>
+                                                            Blood Group: {{ blood_donor_registration[user.id].blood_group }}<br>
+                                                            Location: {{ blood_donor_registration[user.id].location }}<br>
+                                                            Contact: {{ blood_donor_registration[user.id].contact }}
+                                                        </div>
+                                                    {% endif %}
+                                                    {% set chats = chat_histories[user.id][chat_key] %}
+                                                    {% if chats %}
+                                                        <ul class="list-unstyled mb-0">
+                                                            {% for chat in chats %}
+                                                                <li class="mb-3 p-2 rounded" style="background: #23272b; border-left: 4px solid {% if chat.message.startswith('User:') %}#0d6efd{% elif chat.message.startswith('AI:') %}#20c997{% else %}#6c757d{% endif %};">
+                                                                    <div class="fw-bold text-secondary small mb-1">{{ chat.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</div>
+                                                                    <div class="ps-2">
+                                                                        {% if chat.message.startswith('User:') %}
+                                                                            <span class="badge bg-primary">User</span>
+                                                                            <span class="text-light">{{ chat.message.replace('User:', '').strip() }}</span>
+                                                                        {% elif chat.message.startswith('AI:') %}
+                                                                            <span class="badge bg-success">AI</span>
+                                                                            <span class="text-light">{{ chat.message.replace('AI:', '').strip() | markdown | safe }}</span>
+                                                                        {% else %}
+                                                                            <span class="text-light">{{ chat.message }}</span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    {% else %}
+                                                        <div class="text-muted">No history.</div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    
+                                    <h6>Exercise History ({{ exercise_histories[user.id]|length }} exercises):</h6>
+                                    <div class="card mb-3 bg-dark border-warning">
+                                        <div class="card-header text-warning">
+                                            <i class="bi bi-activity"></i> Exercise Activities
+                                        </div>
+                                        <div class="card-body" style="max-height: 250px; overflow-y: auto;">
+                                            {% set exercises = exercise_histories[user.id] %}
+                                            {% if exercises %}
+                                                <ul class="list-unstyled mb-0">
+                                                    {% for exercise in exercises %}
+                                                        <li class="mb-3 p-2 rounded" style="background: #23272b; border-left: 4px solid #ffc107;">
+                                                            <div class="fw-bold text-secondary small mb-1">{{ exercise.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</div>
+                                                            <div class="ps-2">
+                                                                <span class="badge bg-warning text-dark">Exercise</span>
+                                                                <span class="text-light">{{ exercise.exercise_title }}</span>
+                                                                <span class="badge bg-info ms-2">{{ exercise.duration }} seconds</span>
+                                                            </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% else %}
+                                                <div class="text-muted">No exercise history.</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    <h6>Pill Reminders for User ID {{ user.id }} ({{ pill_reminders[user.id]|length }} reminders):</h6>
+                                    <div class="card mb-3 bg-dark border-info">
+                                        <div class="card-header text-info">
+                                            <i class="bi bi-alarm"></i> Medication Reminders
+                                        </div>
+                                        <div class="card-body" style="max-height: 250px; overflow-y: auto;">
+                                            {% set reminders = pill_reminders[user.id] %}
+                                            {% if reminders %}
+                                                <ul class="list-unstyled mb-0">
+                                                    {% for reminder in reminders %}
+                                                        <li class="mb-3 p-2 rounded" style="background: #23272b; border-left: 4px solid #17a2b8;">
+                                                            <div class="fw-bold text-secondary small mb-1">{{ reminder.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</div>
+                                                            <div class="ps-2">
+                                                                <span class="badge bg-info">Pill Reminder</span>
+                                                                <span class="text-light">{{ reminder.pill_name }}</span>
+                                                                <span class="badge bg-secondary ms-2">{{ reminder.dosage }}</span>
+                                                                <span class="badge {% if reminder.is_active %}bg-success{% else %}bg-secondary{% endif %} ms-2">
+                                                                    {% if reminder.is_active %}Active{% else %}Inactive{% endif %}
+                                                                </span>
+                                                            </div>
+                                                            <div class="ps-2 mt-1">
+                                                                <small class="text-muted">
+                                                                    {{ reminder.frequency }} - {{ reminder.time_of_day }}
+                                                                </small>
+                                                            </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% else %}
+                                                <div class="text-muted">No pill reminders.</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# Debug: Show all pill reminders in the database if available #}
+{% if all_pill_reminders is defined %}
+<!-- Debug section removed as per user request -->
+{% endif %}
+{% endblock %} 

@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+.blood-donor-bg {
+    background: #101214 !important;
+    color: #fff;
+    border-radius: 24px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    padding: 32px 24px 24px 24px;
+    margin-top: 0;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.blood-donor-heading {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #00bcd4;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+.blood-donor-divider {
+    border-top: 2px solid #00bcd4;
+    margin: 2rem 0 2rem 0;
+}
+.blood-donor-table th {
+    background: #23272b !important;
+    color: #00bcd4 !important;
+    font-weight: 600;
+    text-align: center;
+}
+.blood-donor-table td {
+    text-align: center;
+    vertical-align: middle;
+}
+.blood-donor-table tr {
+    border-radius: 12px;
+}
+.blood-donor-table tbody tr:hover {
+    background: #23272b !important;
+    box-shadow: 0 2px 8px rgba(0,188,212,0.08);
+}
+.blood-donor-summary-box {
+    background: #23272b !important;
+    color: #fff !important;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,188,212,0.08);
+    padding: 18px 0;
+    margin-bottom: 12px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.card, .card-header, .card-body, form {
+    background: #101214 !important;
+    color: #fff !important;
+    border-radius: 18px;
+    border: none;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.form-label, .form-select, .form-control {
+    background-color: #23272b !important;
+    color: #fff !important;
+    border: 1px solid #39424e !important;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.form-control:focus, .form-select:focus {
+    border-color: #20c997 !important;
+    outline: none;
+    box-shadow: 0 0 10px rgba(32, 201, 151, 0.6);
+}
+.btn-info, .btn-success {
+    background: #1a233a !important;
+    color: #fff !important;
+    font-weight: 600;
+    border-radius: 30px;
+    border: none;
+    transition: background 0.2s, color 0.2s;
+}
+.btn-info:hover, .btn-success:hover {
+    background: #223366 !important;
+    color: #fff !important;
+}
+.top-section-blood {
+    background: #1a233a;
+    color: #fff;
+    border-radius: 18px 18px 0 0;
+    padding: 48px 32px 24px 32px;
+    text-align: center;
+    max-width: 700px;
+    width: 100%;
+    margin: 0 auto 0 auto;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+</style>
+<div class="container py-5">
+    <!-- Top Section -->
+    <section class="top-section-blood">
+        <h2>Blood Donor</h2>
+        <p>
+            Blood donation saves lives and is a vital part of healthcare. By registering as a donor or searching for donors, you can help patients in need of transfusions due to surgery, accidents, or medical conditions. Every donation makes a difference—be a hero today!
+        </p>
+    </section>
+    <div class="blood-donor-bg">
+        <div class="row g-4 justify-content-center">
+            <!-- Registration Form (Left) -->
+            <div class="col-md-5">
+                <div class="card shadow-lg bg-dark text-light rounded-4 border-0">
+                    <div class="card-header text-info text-center fs-5 fw-bold bg-dark border-0 rounded-top-4">
+                        <i class="bi bi-droplet-fill"></i> Register as Blood Donor
+                    </div>
+                    <div class="card-body p-4">
+                        {% if message %}
+                            <div class="alert alert-info text-center">{{ message }}</div>
+                        {% endif %}
+                        <form method="POST">
+                            <input type="hidden" name="register" value="1">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control rounded-pill" id="name" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="blood_group" class="form-label">Blood Group</label>
+                                <select class="form-select rounded-pill" id="blood_group" name="blood_group" required>
+                                    <option value="">Select</option>
+                                    {% for bg in blood_groups %}
+                                        <option value="{{ bg }}">{{ bg }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="location" class="form-label">Location</label>
+                                <input type="text" class="form-control rounded-pill" id="location" name="location" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="contact" class="form-label">Contact Info</label>
+                                <input type="text" class="form-control rounded-pill" id="contact" name="contact" required>
+                            </div>
+                            <button type="submit" class="btn btn-info w-100 rounded-pill fw-bold">Register as Donor</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Search and Results (Right) -->
+            <div class="col-md-7">
+                <div class="card shadow-lg bg-dark text-light mb-4 rounded-4 border-0">
+                    <div class="card-header text-info text-center fs-5 fw-bold bg-dark border-0 rounded-top-4">
+                        <i class="bi bi-search"></i> Find Blood Donor
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="GET" class="row g-2 align-items-end justify-content-center">
+                            <div class="col-md-5">
+                                <label for="search_group" class="form-label">Blood Group</label>
+                                <select class="form-select rounded-pill" id="search_group" name="search_group">
+                                    <option value="">Any</option>
+                                    {% for bg in blood_groups %}
+                                        <option value="{{ bg }}" {% if request.args.get('search_group') == bg %}selected{% endif %}>{{ bg }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <label for="search_location" class="form-label">Location</label>
+                                <input type="text" class="form-control rounded-pill" id="search_location" name="search_location" value="{{ request.args.get('search_location', '') }}">
+                            </div>
+                            <div class="col-md-2 d-grid">
+                                <button type="submit" class="btn btn-success rounded-pill fw-bold">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- Results -->
+                <div class="card shadow-lg bg-dark text-light mb-4 rounded-4 border-0">
+                    <div class="card-header text-info text-center fs-5 fw-bold bg-dark border-0 rounded-top-4">
+                        <i class="bi bi-people-fill"></i> Matching Donors
+                    </div>
+                    <div class="card-body p-4">
+                        {% if donors %}
+                            <table class="table blood-donor-table table-dark table-striped table-hover align-middle rounded-3 overflow-hidden">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Blood Group</th>
+                                        <th>Location</th>
+                                        <th>Contact</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for donor in donors %}
+                                    <tr>
+                                        <td>{{ donor.name }}</td>
+                                        <td>{{ donor.blood_group }}</td>
+                                        <td>{{ donor.location }}</td>
+                                        <td>{{ donor.contact }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="text-muted text-center">No matching donors found. Try a different search.</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="blood-donor-divider"></div>
+        <!-- Donor Status Summary (Bottom, full width) -->
+        <div class="row mt-4 justify-content-center">
+            <div class="col-12">
+                <div class="card shadow-lg bg-dark text-light rounded-4 border-0">
+                    <div class="card-header text-info text-center fs-5 fw-bold bg-dark border-0 rounded-top-4">
+                        <i class="bi bi-bar-chart-fill"></i> Blood Donor Status Summary
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-2 justify-content-center">
+                            {% for bg, count in summary.items() %}
+                            <div class="col-6 col-md-3">
+                                <div class="blood-donor-summary-box text-center">
+                                    <span class="fw-bold fs-5">{{ bg }}</span><br>
+                                    <span class="badge bg-info text-dark fs-6">{{ count }} donors</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Blood Donor Chat Section -->
+    
+    <br><br><br>
+</div>
+{% endblock %} 

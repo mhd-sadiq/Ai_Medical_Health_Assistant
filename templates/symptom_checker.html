@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+{% block title %}Symptom Checker{% endblock %}
+{% block content %}
+
+<!-- Font Awesome for microphone icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  body, .symptom-bg {
+    background: #181a1b !important;
+    color: #f8f9fa;
+  }
+  .top-box, .top-section {
+    background: #1a233a !important;
+    color: #fff;
+    padding: 48px 32px 24px 32px;
+    border-radius: 18px;
+    margin: 40px auto 0;
+    width: 95%;
+    max-width: 800px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+  .top-box h1 { font-size: 2.4rem; font-weight: 800; margin-bottom: 10px; }
+  .top-box p { font-size: 1.1rem; color: #d0e3f7; }
+  .top-box a {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 30px;
+    background-color: #fff;
+    color: #0f1115;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: 0.3s ease;
+  }
+  .top-box a:hover { background-color: #e3e3e3; }
+  .symptom-wrapper, .card {
+    background: #101214 !important;
+    color: #fff;
+    border-radius: 0 0 18px 18px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    padding: 2.5rem 2rem 2rem 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .form-label {
+    font-weight: 600;
+    color: #cfd8dc;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .form-control, select, textarea {
+    background-color: #23272b !important;
+    color: #fff !important;
+    border: 1px solid #39424e !important;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .form-control::placeholder { color: #90a4ae; }
+  .form-control:focus, select:focus, textarea:focus {
+    border-color: #20c997 !important;
+    outline: none;
+    box-shadow: 0 0 10px rgba(32, 201, 151, 0.6);
+  }
+  .btn-submit {
+    background: #1a233a !important;
+    color: #fff !important;
+    font-weight: 600;
+    padding: 14px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    width: 100%;
+    margin-top: 20px;
+    transition: 0.3s ease-in-out;
+  }
+  .btn-submit:hover {
+    background: #223366 !important;
+    color: #fff !important;
+    transform: translateY(-1px);
+  }
+  .markdown-output {
+    background-color: #23272b;
+    border-left: 5px solid #20c997;
+    color: #d1ecf1;
+    padding: 25px 30px;
+    border-radius: 12px;
+    font-size: 1rem;
+    margin-top: 35px;
+    line-height: 1.7;
+  }
+  .markdown-output h2, .markdown-output h3 {
+    color: #20c997;
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  .markdown-output ul {
+    margin-left: 20px;
+    list-style-type: disc;
+  }
+  #voiceBtn {
+    min-width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #1a233a !important;
+    color: #fff !important;
+    font-size: 1.2rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+  }
+  #voiceBtn:hover {
+    background: #223366 !important;
+    color: #fff !important;
+  }
+  @media (max-width: 576px) {
+    .top-box h1 { font-size: 2rem; }
+    .btn-submit { font-size: 0.95rem; padding: 12px 20px; }
+    .symptom-wrapper { padding: 40px 15px; }
+  }
+</style>
+
+<div class="container py-5">
+  <div class="symptom-unified-container" style="max-width:800px;margin:40px auto 0 auto;display:flex;flex-direction:column;align-items:center;width:100%;">
+    <!-- Top Section -->
+    <section class="top-section" style="background: #1a233a !important; color: #fff; border-radius: 18px 18px 0 0; padding: 48px 32px 24px 32px; text-align: center; width:100%; box-sizing:border-box; box-shadow: 0 8px 20px rgba(0,0,0,0.3); margin-bottom: 0;">
+      <h2 style="font-weight: bold; color: #fff; letter-spacing: 1px; font-size: 2.2rem;">Symptom Checker</h2>
+      <p style="color: #e0f2f1; font-size: 1.15rem; margin-bottom: 0;">
+        Use our AI-powered tool to analyze your symptoms and receive tailored next-step suggestions. Enter your details below for a personalized assessment and guidance.
+      </p>
+    </section>
+    <!-- Main Card/Form Section -->
+    <div class="card p-4 shadow-lg" style="width:100%;background:#101214 !important;border-radius:0 0 18px 18px;margin-top:0;color:#fff;box-shadow:0 10px 28px rgba(0,0,0,0.35);">
+      <h4 class="mb-4 text-center" style="color: #fff; font-weight: 600; letter-spacing: 0.5px;">Enter Your Input</h4>
+          <form method="POST">
+            <div class="row g-4">
+              <!-- Left Side Inputs -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="age" class="form-label">Age Group</label>
+                  <select name="age" id="age" class="form-control" required>
+                    <option value="">Select Age Group</option>
+                    <option value="Child (0-12)">Child (0-12)</option>
+                    <option value="Teenager (13-19)">Teenager (13-19)</option>
+                    <option value="Adult (20-64)">Adult (20-64)</option>
+                    <option value="Senior (65+)">Senior (65+)</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="gender" class="form-label">Gender</label>
+                  <select name="gender" id="gender" class="form-control" required>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="weight" class="form-label">Weight (kg)</label>
+                  <input type="number" name="weight" id="weight" class="form-control" placeholder="Enter your weight" required>
+                </div>
+              </div>
+              <!-- Right Side Inputs -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="symptoms" class="form-label">Describe Your Symptoms</label>
+                  <div style="display: flex; gap: 10px;">
+                    <textarea name="symptoms" id="symptoms" class="form-control" rows="3" placeholder="E.g., Fever, cough, fatigue..." required></textarea>
+                    <button type="button" id="voiceBtn" title="Speak your symptoms">
+                      <i class="fas fa-microphone"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="severity" class="form-label">Severity</label>
+                  <select name="severity" id="severity" class="form-control" required>
+                    <option value="">Select Severity</option>
+                    <option value="Mild">Mild</option>
+                    <option value="Moderate">Moderate</option>
+                    <option value="Severe">Severe</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="duration" class="form-label">Duration</label>
+                  <select name="duration" id="duration" class="form-control" required>
+                    <option value="">Select Duration</option>
+                    <option value="Less than 1 day">Less than 1 day</option>
+                    <option value="1-3 days">1–3 days</option>
+                    <option value="4-7 days">4–7 days</option>
+                    <option value="More than 1 week">More than 1 week</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn-submit">Check Symptoms</button>
+            <div id="loading" style="display:none; color:#20c997; font-style:italic; margin-top:15px;">
+              🔍 Checking your symptoms...
+            </div>
+          </form>
+          {% if response %}
+          <div class="markdown-output">
+            {{ response | safe }}
+          </div>
+          {% endif %}
+        </div>
+    <!-- End Main Card/Form Section -->
+    <!-- Chat History Section -->
+    <div class="text-center mt-4">
+      <button class="history-toggle btn-info" type="button" onclick="toggleHistory()" style="background: linear-gradient(135deg, #3c3b3f, #23272b); border: none; padding: 12px 28px; font-weight: 600; border-radius: 30px; color: #fff; margin: 0 auto; display: inline-block; transition: background 0.3s ease-in-out;">
+        <i class="fas fa-history"></i> View Chat History
+      </button>
+    </div>
+    <div class="chat-history" id="chatHistory" style="display: none; margin-top: 20px; padding: 20px; background: #23272b; border-radius: 10px; max-width: 700px; margin-left: auto; margin-right: auto;">
+      <div class="history-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h5 class="history-title" style="color: #20c997; margin: 0;">Symptom Checker Chat History</h5>
+        <button class="clear-history" onclick="clearHistory()" style="background: none; border: none; color: #dc3545; cursor: pointer; font-size: 1rem; padding: 5px 10px; border-radius: 15px; transition: all 0.3s ease;">
+          <i class="fas fa-trash"></i> Clear History
+        </button>
+      </div>
+      {% if chat_history and chat_history|length > 0 %}
+        {% for chat in chat_history %}
+          <div class="chat-message" style="margin-bottom: 15px; padding: 18px; background: #181a1b; border-radius: 10px; box-shadow: 0 2px 8px rgba(32,201,151,0.07);">
+            <div style="font-weight:600; color:#20c997; margin-bottom:4px;">
+              {% if chat.message.startswith('User:') %}You:{% elif chat.message.startswith('AI:') %}AI:{% endif %}
+            </div>
+            <div style="white-space:pre-wrap; color: #fff;">
+              {% if chat.message.startswith('User:') %}
+                {{ chat.message.replace('User:', '').strip() }}
+              {% elif chat.message.startswith('AI:') %}
+                {{ chat.message.replace('AI:', '').strip() | markdown }}
+              {% else %}
+                {{ chat.message }}
+              {% endif %}
+            </div>
+            <div style="color: #888; font-size: 0.8em; margin-top: 5px;">
+              {{ chat.timestamp.strftime('%Y-%m-%d %I:%M %p') }}
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div style="color: #fff; font-style: italic;">No chat history for Symptom Checker yet.</div>
+      {% endif %}
+    </div>
+  </div>
+  <!-- End Unified Container -->
+</div>
+
+<!-- Scripts -->
+<script>
+  const form = document.querySelector("form");
+  form.addEventListener("submit", function () {
+    document.getElementById("loading").style.display = "block";
+  });
+
+  const voiceBtn = document.getElementById('voiceBtn');
+  const symptomInput = document.getElementById('symptoms');
+
+  if ('webkitSpeechRecognition' in window) {
+    const recognition = new webkitSpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+
+    voiceBtn.addEventListener('click', () => {
+      recognition.start();
+    });
+
+    recognition.onresult = function (event) {
+      symptomInput.value = event.results[0][0].transcript;
+    };
+
+    recognition.onerror = function (event) {
+      alert("🎤 Voice recognition error: " + event.error);
+    };
+  } else {
+    voiceBtn.disabled = true;
+    voiceBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+    voiceBtn.title = "Speech recognition not supported.";
+  }
+
+  function toggleHistory() {
+    const historyDiv = document.getElementById('chatHistory');
+    const button = document.querySelector('.history-toggle');
+    if (historyDiv.style.display === 'none') {
+      historyDiv.style.display = 'block';
+      button.classList.add('active');
+      button.textContent = 'Hide Chat History';
+      button.insertAdjacentHTML('afterbegin', '<i class="fas fa-history"></i> ');
+    } else {
+      historyDiv.style.display = 'none';
+      button.classList.remove('active');
+      button.textContent = 'View Chat History';
+      button.insertAdjacentHTML('afterbegin', '<i class="fas fa-history"></i> ');
+    }
+  }
+
+  function clearHistory() {
+    if (confirm('Are you sure you want to clear your symptom checker chat history?')) {
+      fetch('/clear_chat_history', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'section=symptom_checker'
+      }).then(() => {
+        window.location.reload();
+      });
+    }
+  }
+</script>
+
+{% endblock %}

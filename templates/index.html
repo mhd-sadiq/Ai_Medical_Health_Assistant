@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+{% block title %}Home - AI Health Assistant{% endblock %}
+{% block content %}
+
+<!-- Modern Professional Dark Theme -->
+<style>
+  body, .main-bg {
+    background: #000 !important;
+    color: #f8f9fa;
+  }
+
+  .main-heading-section {
+    background: #1a233a;
+    color: #fff;
+    padding: 40px 0 30px;
+    text-align: center;
+    border-radius: 0 0 30px 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    margin-bottom: 20px;
+  }
+
+  .main-heading-section h1 {
+    font-size: 2.6rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+  }
+
+  .main-heading-section p {
+    font-size: 1.1rem;
+    color: #cfd8dc;
+    max-width: 720px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 2.3rem;
+    font-weight: 700;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    color: #0d6efd;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  hr.section-divider {
+    border: none;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    width: 80%;
+    margin: 10px auto 30px;
+  }
+
+  .card {
+    border: none;
+    border-radius: 20px;
+    padding: 25px;
+    height: 100%;
+    color: #fff;
+    background: #1a233a;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .card-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+
+  .card-text {
+    font-size: 1rem;
+    opacity: 0.9;
+    line-height: 1.5;
+  }
+
+  .card a.btn {
+    font-weight: 600;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border-radius: 25px;
+    margin-top: 15px;
+    border: 2px solid #fff;
+    color: #fff;
+    transition: all 0.3s ease;
+    display: inline-block;
+    background: #23272b;
+  }
+
+  .card a.btn:hover {
+    background-color: #20c997;
+    color: #fff;
+    text-decoration: none;
+    border: 2px solid #20c997;
+  }
+
+  .card-symptom, .card-diet, .card-chat, .card-emergency {
+    background: #23272b !important;
+  }
+
+  @media (max-width: 768px) {
+    .main-heading-section h1 {
+      font-size: 2.2rem;
+    }
+
+    .main-heading-section p {
+      font-size: 1rem;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+    }
+  }
+
+  .services-section-box {
+    background: #1a233a;
+    color: #fff;
+    border-radius: 18px;
+    padding: 28px 32px 18px 32px;
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+    position: relative;
+    z-index: 1;
+  }
+
+  .container.bg-dark {
+    background: wheat !important;
+  }
+</style>
+
+<div class="main-bg">
+<!-- Welcome Section -->
+<section class="main-heading-section">
+  <div class="container">
+    <h1>Welcome to AI Health Assistant</h1>
+    <p>
+      An intelligent health companion that helps you check symptoms, get personalized diet advice, access emergency support, and chat with an AI anytime. We simplify healthcare through smart and accessible technology.
+    </p>
+    {% if current_user.is_authenticated %}
+      <div class="mt-4">
+        <span class="fs-5">👋 Hello, {{ current_user.name }}!</span>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Divider -->
+<hr class="section-divider">
+
+<!-- Our Services Section -->
+<section class="pb-5">
+  <div class="container">
+    <div class="services-section-box">
+      <h2 class="section-title" style="color:#fff;margin-bottom:0;">OUR SERVICES</h2>
+    </div>
+    <div class="row g-4 text-center">
+      <!-- Symptom Checker -->
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">🩺 Symptom Checker</h5>
+            <p class="card-text">AI-powered analysis for your symptoms to guide your next steps.</p>
+            <a href="/symptom" class="btn">Check Now</a>
+          </div>
+        </div>
+      </div>
+      <!-- Diet Tips -->
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">🥗 Diet Tips</h5>
+            <p class="card-text">Personalized dietary advice based on your health goals and needs.</p>
+            <a href="/diet" class="btn">Get Tips</a>
+          </div>
+        </div>
+      </div>
+      <!-- Health Chat -->
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">💬 Health Chat</h5>
+            <p class="card-text">Chat with our AI for instant responses to your health-related queries.</p>
+            <a href="/chat" class="btn">Start Chat</a>
+          </div>
+        </div>
+      </div>
+      <!-- Emergency Resources -->
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">🚨 Emergency Resources</h5>
+            <p class="card-text">Get instant access to emergency tools and vital health resources.</p>
+            <a href="/emergency" class="btn">View Resources</a>
+          </div>
+        </div>
+      </div>
+      <!-- Blood Donor -->
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">🩸 Blood Donor</h5>
+            <p class="card-text">Find and register as a blood donor, or search for donors in your area.</p>
+            <a href="/blood_donor" class="btn">Find Donors</a>
+          </div>
+        </div>
+      </div>
+      <!-- BMI Calculator -->
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">⚖️ BMI Calculator</h5>
+            <p class="card-text">Calculate your Body Mass Index (BMI) to assess your weight status.</p>
+            <a href="/bmi" class="btn">Calculate BMI</a>
+          </div>
+        </div>
+      </div>
+      <!-- Exercise -->
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">🏋️ Exercise</h5>
+            <p class="card-text">Explore exercise tips and routines for a healthier lifestyle.</p>
+            <a href="/exercise" class="btn">Get Exercises</a>
+          </div>
+        </div>
+      </div>
+      <!-- Pill Reminder -->
+      <div class="col-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">⏰ Pill Reminder</h5>
+            <p class="card-text">Set up medication reminders and never miss a dose. Get notified at the right time!</p>
+            <a href="{{ url_for('pill_reminder') }}" class="btn">Set Reminder</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+{% endblock %}

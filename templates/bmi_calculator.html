@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% block title %}BMI Calculator{% endblock %}
+{% block content %}
+<style>
+    body, .bmi-bg {
+        background: #101214 !important;
+        min-height: 100vh;
+        padding: 2rem 0;
+    }
+    .bmi-card {
+        background: #101214 !important;
+        color: #fff;
+        border-radius: 0 0 18px 18px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        padding: 2.5rem 2rem 2rem 2rem;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .bmi-gradient-top {
+        background: #1a233a !important;
+        color: #fff;
+        border-radius: 18px 18px 0 0;
+        padding: 48px 32px 24px 32px;
+        text-align: center;
+        max-width: 800px;
+        margin: 40px auto 0 auto;
+    }
+    .bmi-btn {
+        background: #1a233a !important;
+        color: #fff !important;
+        font-weight: 600;
+        font-size: 1.1rem;
+        border-radius: 30px;
+        padding: 16px 0;
+        width: 100%;
+        margin-top: 18px;
+        transition: background 0.3s, transform 0.2s;
+        border: none;
+    }
+    .bmi-btn:hover {
+        background: #223366 !important;
+        color: #fff !important;
+        transform: translateY(-2px);
+        box-shadow: 0 0 12px rgba(32, 201, 151, 0.6);
+    }
+    .bmi-label {
+        color: #e0f2f1;
+        font-weight: 500;
+        margin-bottom: 6px;
+    }
+    .bmi-result {
+        background: #181a1b;
+        border-radius: 12px;
+        color: #fff;
+        padding: 20px 0 10px 0;
+        margin-top: 24px;
+        text-align: center;
+        font-size: 1.2rem;
+    }
+    .form-control, select, textarea {
+        background-color: #23272b !important;
+        color: #fff !important;
+        border: 1px solid #39424e !important;
+        border-radius: 10px;
+        padding: 14px;
+        font-size: 1rem;
+        width: 100%;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-control:focus, select:focus, textarea:focus {
+        border-color: #20c997 !important;
+        outline: none;
+        box-shadow: 0 0 10px rgba(32, 201, 151, 0.6);
+    }
+    @media (max-width: 1000px) {
+        .bmi-card, .bmi-gradient-top { max-width: 98vw; }
+    }
+</style>
+<div class="container py-5">
+    <div class="bmi-bg">
+        <!-- Top Gradient Box -->
+        <section class="bmi-gradient-top">
+            <h2 style="font-weight: bold; color: #fff; letter-spacing: 1px; font-size: 2.2rem;">BMI Calculator</h2>
+            <p style="color: #e0f2f1; font-size: 1.15rem; margin-bottom: 0;">
+                Calculate your Body Mass Index (BMI) to assess your weight status. Enter your details below to get your BMI value and status.
+            </p>
+        </section>
+        <!-- Card Section -->
+        <div class="bmi-card mt-0">
+            <h4 class="mb-4 text-center" style="color: #b2dfdb; font-weight: 600; letter-spacing: 0.5px;">Enter Your Details</h4>
+            <form method="POST">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="weight" class="form-label bmi-label">Weight (kg)</label>
+                            <input type="number" name="weight" id="weight" class="form-control" required placeholder="Enter your weight">
+                        </div>
+                        <div class="mb-3">
+                            <label for="gender" class="form-label bmi-label">Gender</label>
+                            <select name="gender" id="gender" class="form-control" required>
+                                <option value="" disabled selected>Select your gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="activity_level" class="form-label bmi-label">Activity Level</label>
+                            <select name="activity_level" id="activity_level" class="form-control" required>
+                                <option value="" disabled selected>Select your activity level</option>
+                                <option value="sedentary">Sedentary</option>
+                                <option value="lightly_active">Lightly Active</option>
+                                <option value="moderately_active">Moderately Active</option>
+                                <option value="very_active">Very Active</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="height" class="form-label bmi-label">Height (cm)</label>
+                            <input type="number" name="height" id="height" class="form-control" required placeholder="Enter your height">
+                        </div>
+                        <div class="mb-3">
+                            <label for="age" class="form-label bmi-label">Age</label>
+                            <input type="number" name="age" id="age" class="form-control" required placeholder="Enter your age">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="bmi-btn">Calculate BMI</button>
+            </form>
+            {% if response %}
+              <div class="bmi-output" style="background: #23272b; border-left: 5px solid #20c997; color: #d1ecf1; padding: 25px 30px; border-radius: 12px; font-size: 1rem; margin-top: 35px; line-height: 1.7;">
+                {{ response|markdown|safe }}
+              </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Chat History Section -->
+    <div class="text-center mt-4">
+      <button class="history-toggle btn-info" type="button" onclick="toggleHistory()" style="background: linear-gradient(135deg, #3c3b3f, #23272b); border: none; padding: 12px 28px; font-weight: 600; border-radius: 30px; color: #fff; margin: 0 auto; display: inline-block; transition: background 0.3s ease-in-out;">
+        <i class="fas fa-history"></i> View Chat History
+      </button>
+    </div>
+    <div class="chat-history" id="chatHistory" style="display: none; margin-top: 20px; padding: 20px; background: #23272b; border-radius: 10px; max-width: 700px; margin-left: auto; margin-right: auto;">
+      <div class="history-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h5 class="history-title" style="color: #20c997; margin: 0;">BMI Calculator Chat History</h5>
+        <form action="/clear_chat_history" method="POST" style="display:inline;">
+          <input type="hidden" name="section" value="bmi_calculator">
+          <button type="submit" class="clear-history" style="background: none; border: none; color: #dc3545; cursor: pointer; font-size: 1rem; padding: 5px 10px; border-radius: 15px; transition: all 0.3s ease;">
+            <i class="fas fa-trash"></i> Clear History
+          </button>
+        </form>
+      </div>
+      {% if chat_history and chat_history|length > 0 %}
+        {% for chat in chat_history %}
+          <div class="chat-message" style="margin-bottom: 15px; padding: 18px; background: #181a1b; border-radius: 10px; box-shadow: 0 2px 8px rgba(32,201,151,0.07);">
+            <div style="font-weight:600; color:#20c997; margin-bottom:4px;">
+              {% if chat.message.startswith('User:') %}You:{% elif chat.message.startswith('AI:') %}AI:{% endif %}
+            </div>
+            <div style="white-space:pre-wrap; color: #fff;">
+              {% if chat.message.startswith('User:') %}
+                {{ chat.message.replace('User:', '').strip() }}
+              {% elif chat.message.startswith('AI:') %}
+                {{ chat.message.replace('AI:', '').strip() | markdown }}
+              {% else %}
+                {{ chat.message }}
+              {% endif %}
+            </div>
+            <div style="color: #888; font-size: 0.8em; margin-top: 5px;">
+              {{ chat.timestamp.strftime('%Y-%m-%d %I:%M %p') }}
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div style="color: #fff; font-style: italic;">No chat history for BMI Calculator yet.</div>
+      {% endif %}
+    </div>
+</div>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- Chat History Toggle Script -->
+<script>
+function toggleHistory() {
+  const historyDiv = document.getElementById('chatHistory');
+  const button = document.querySelector('.history-toggle');
+  if (historyDiv.style.display === 'none') {
+    historyDiv.style.display = 'block';
+    button.classList.add('active');
+    button.textContent = 'Hide Chat History';
+    button.insertAdjacentHTML('afterbegin', '<i class="fas fa-history"></i> ');
+  } else {
+    historyDiv.style.display = 'none';
+    button.classList.remove('active');
+    button.textContent = 'View Chat History';
+    button.insertAdjacentHTML('afterbegin', '<i class="fas fa-history"></i> ');
+  }
+}
+</script>
+{% endblock %} 

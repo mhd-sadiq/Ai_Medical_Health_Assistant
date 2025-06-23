@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% block title %}Medicine Identifier{% endblock %}
+{% block content %}
+<style>
+  .med-bg {
+    background: #181a1b !important;
+    color: #f8f9fa;
+    min-height: 100vh;
+    padding: 2rem 0;
+  }
+  .top-section-med {
+    background: #1a233a !important;
+    color: #fff;
+    padding: 48px 32px 24px 32px;
+    border-radius: 18px 18px 0 0;
+    margin: 100px auto 0;
+    width: 95%;
+    max-width: 800px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+  .top-section-med h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+  .top-section-med p {
+    font-size: 1.13rem;
+    color: #e3f2fd;
+    margin-bottom: 0;
+  }
+  .med-card {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    background: #101214 !important;
+    color: #fff;
+    border-radius: 0 0 18px 18px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    padding: 40px 30px 30px 30px;
+    margin-bottom: 40px;
+  }
+  .form-label {
+    font-weight: 600;
+    color: #e0e0e0;
+    margin-bottom: 8px;
+    display: block;
+    text-align: left;
+  }
+  .form-control {
+    background-color: #23272b !important;
+    color: #fff !important;
+    border: 1px solid #39424e !important;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .form-control:focus {
+    border-color: #1976d2;
+    outline: none;
+    box-shadow: 0 0 10px rgba(25, 118, 210, 0.4);
+  }
+  .btn-submit-med {
+    background: #1a233a !important;
+    color: #fff !important;
+    font-weight: 600;
+    padding: 14px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    width: 100%;
+    margin-top: 20px;
+    transition: 0.3s ease-in-out;
+  }
+  .btn-submit-med:hover {
+    background: #223366 !important;
+    color: #fff !important;
+    transform: translateY(-1px);
+  }
+  .med-result-box {
+    margin-top: 30px;
+    background-color: #23272b;
+    border-left: 5px solid #1976d2;
+    color: #e3f2fd;
+    padding: 30px;
+    border-radius: 12px;
+    font-size: 1.08rem;
+    line-height: 1.8;
+    text-align: left;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 18px rgba(25, 118, 210, 0.13);
+    white-space: normal;
+    overflow-x: auto;
+  }
+  .med-section {
+    margin-bottom: 1.5rem;
+  }
+  .med-section h3 {
+    color: #90caf9;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .med-section .icon {
+    font-size: 1.3rem;
+    color: #64b5f6;
+  }
+  .med-section p {
+    margin-bottom: 0;
+    color: #e3f2fd;
+  }
+  @media (max-width: 768px) {
+    .top-section-med h2 {
+      font-size: 2rem;
+    }
+    .btn-submit-med {
+      font-size: 0.95rem;
+    }
+    .top-section-med, .med-card, .med-result-box {
+      width: 95%;
+    }
+  }
+</style>
+<div class="med-bg">
+  <!-- Top Section -->
+  <section class="top-section-med">
+    <h2>Medicine Identifier</h2>
+    <p>
+      Upload a clear photo of a medicine strip, bottle, or box. Our AI will analyze the image, read the label, and provide you with the medicine's name, usage, dosage, and common side effects. This tool is for informational purposes only—always consult a healthcare professional before taking any medication.
+    </p>
+  </section>
+  <!-- Form Section -->
+  <div class="med-card">
+    <form method="POST" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="photo" class="form-label">Upload a photo of the medicine</label>
+        <input class="form-control" type="file" id="photo" name="photo" accept="image/png, image/jpeg, image/jpg" required>
+      </div>
+      <button type="submit" class="btn btn-submit-med">Identify Medicine</button>
+    </form>
+    {% if filename %}
+      <div class="mb-4 text-center">
+        <h5 class="fw-bold mt-4">Uploaded Image:</h5>
+        <img src="{{ url_for('static', filename='uploads/' ~ filename) }}" alt="Uploaded Medicine" class="img-thumbnail shadow" style="max-width:320px;">
+      </div>
+    {% endif %}
+    {% if response %}
+      <div class="med-result-box mt-4">{{ response|safe }}</div>
+    {% endif %}
+    {% if medicine_name or usage or dosage or side_effects %}
+      <div class="med-result-box mt-4">
+        <div class="med-section">
+          <h3><span class="icon">💊</span> Name</h3>
+          <p>{{ medicine_name }}</p>
+        </div>
+        <div class="med-section">
+          <h3><span class="icon">📋</span> Usage</h3>
+          <p>{{ usage }}</p>
+        </div>
+        <div class="med-section">
+          <h3><span class="icon">💉</span> Dosage</h3>
+          <p>{{ dosage }}</p>
+        </div>
+        <div class="med-section">
+          <h3><span class="icon">⚠️</span> Common Side Effects</h3>
+          <p>{{ side_effects }}</p>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %} 

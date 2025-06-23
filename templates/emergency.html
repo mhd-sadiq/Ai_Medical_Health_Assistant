@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block title %}Emergency Resources{% endblock %}
+{% block content %}
+<style>
+  body, .emergency-bg {
+    background: #181a1b !important;
+    color: #f8f9fa;
+  }
+  .emergency-wrapper {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 0 15px;
+  }
+  .emergency-header-box {
+    background: linear-gradient(135deg, #ff416c, #23272b);
+    color: #fff;
+    padding: 35px 30px;
+    border-radius: 20px;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
+    text-align: center;
+    margin-bottom: 0;
+  }
+  .emergency-section {
+    background: #23272b;
+    padding: 40px 30px 45px;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    margin-top: 0;
+  }
+  h2 {
+    font-weight: 700;
+    text-align: center;
+    font-size: 2rem;
+    color: #ff6f61;
+    margin-bottom: 15px;
+  }
+  .text-muted {
+    text-align: center;
+    color: #b0bec5 !important;
+    font-size: 1rem;
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+  .resource-item {
+    background-color: #181a1b;
+    padding: 20px 25px;
+    border-left: 5px solid #ff6f61;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1.6;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+  }
+  .resource-item:hover {
+    transform: scale(1.02);
+    background-color: #23272b;
+  }
+  .resource-item strong {
+    color: #ffcdd2;
+  }
+  @media (max-width: 768px) {
+    .emergency-wrapper {
+      max-width: 100%;
+    }
+    h2, .emergency-header-box h1 {
+      font-size: 1.9rem;
+    }
+    .emergency-header-box p,
+    .text-muted {
+      font-size: 0.95rem;
+    }
+  }
+</style>
+<div class="emergency-bg">
+<div class="emergency-wrapper">
+  <!-- Header Card -->
+  <div class="emergency-header-box">
+    <h1>🚨 Emergency Resources</h1>
+    <p>Access vital emergency contact numbers and essential support services in times of need.</p>
+  </div>
+  <!-- Emergency Section -->
+  <div class="emergency-section">
+    <h2>📌 Quick Contact Numbers</h2>
+    <p class="text-muted">These emergency contacts are always available for urgent medical or safety needs.</p>
+    <div class="resource-item">🚑 <strong>Ambulance:</strong> 102</div>
+    <div class="resource-item">🆘 <strong>National Emergency Helpline:</strong> 112</div>
+    <div class="resource-item">📞 <strong>Health Ministry Helpline:</strong> 1075</div>
+    <div class="resource-item">💊 <strong>24x7 Pharmacy:</strong> Use Google Maps to search for nearby services</div>
+  </div>
+</div>
+</div>
+{% endblock %}

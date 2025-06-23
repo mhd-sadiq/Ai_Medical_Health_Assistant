@@ -1,0 +1,359 @@
+{% extends 'base.html' %}
+{% block title %}Diet Tips{% endblock %}
+{% block content %}
+
+<!-- Include Font Awesome for Microphone Icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  body, .diet-bg {
+    background: #181a1b !important;
+    color: #f8f9fa;
+  }
+
+  .top-section {
+    background: #1a233a !important;
+    color: #fff;
+    padding: 48px 32px 24px 32px;
+    border-radius: 18px 18px 0 0;
+    margin: 100px auto 0;
+    width: 95%;
+    max-width: 800px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .top-section h2 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+  }
+
+  .top-section p {
+    font-size: 1.1rem;
+    color: #e3f2e1;
+  }
+
+  .diet-wrapper {
+    width: 95%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 50px 30px 60px;
+    background: #23272b;
+    border-radius: 0 0 18px 18px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(14px);
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: #e0e0e0;
+    margin-bottom: 8px;
+    display: block;
+    text-align: left;
+  }
+
+  .form-control, select, textarea {
+    background-color: #23272b !important;
+    color: #fff !important;
+    border: 1px solid #39424e !important;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .form-control:focus, select:focus, textarea:focus {
+    border-color: #20c997 !important;
+    outline: none;
+    box-shadow: 0 0 10px rgba(32, 201, 151, 0.6);
+  }
+
+  .btn-submit {
+    background: #1a233a !important;
+    color: #fff !important;
+    font-weight: 600;
+    padding: 14px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    width: 100%;
+    margin-top: 20px;
+    transition: 0.3s ease-in-out;
+  }
+
+  .btn-submit:hover {
+    background: #223366 !important;
+    color: #fff !important;
+    transform: translateY(-1px);
+  }
+
+  .alert-success {
+    margin-top: 30px;
+    background-color: #23272b;
+    border-left: 5px solid #20c997;
+    color: #d4edda;
+    padding: 30px;
+    border-radius: 12px;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    text-align: left;
+    max-height: 500px;
+    overflow-y: auto;
+    white-space: normal;
+    scrollbar-width: thin;
+  }
+
+  .alert-success h2 {
+    color: #20c997;
+    font-size: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .alert-success ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .alert-success li {
+    margin-bottom: 0.6rem;
+  }
+
+  .alert-success strong {
+    color: #ffe082;
+  }
+
+  .alert-success::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .alert-success::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+  }
+
+  #voiceBtn {
+    min-width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #1a233a !important;
+    color: #fff !important;
+    font-size: 1.2rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+  }
+
+  #voiceBtn:hover {
+    background: #223366 !important;
+    color: #fff !important;
+  }
+
+  @media (max-width: 768px) {
+    .top-section h2 {
+      font-size: 2rem;
+    }
+
+    .btn-submit {
+      font-size: 0.95rem;
+    }
+
+    .top-section,
+    .diet-wrapper {
+      width: 95%;
+    }
+  }
+
+  .diet-bg {
+    background: #101214 !important;
+    min-height: 100vh;
+    padding: 2rem 0;
+  }
+
+  .card {
+    background: #1a233a !important;
+    color: #fff;
+  }
+</style>
+
+<div class="container py-5">
+  <div class="diet-unified-container" style="max-width:800px;margin:40px auto 0 auto;display:flex;flex-direction:column;align-items:center;width:100%;">
+    <!-- Top Section -->
+    <section class="top-section" style="background: #1a233a !important; color: #fff; border-radius: 18px 18px 0 0; padding: 48px 32px 24px 32px; text-align: center; width:100%; box-sizing:border-box; box-shadow: 0 8px 20px rgba(0,0,0,0.3); margin-bottom: 0;">
+      <h2 style="font-weight: bold; color: #fff; letter-spacing: 1px; font-size: 2.2rem;">Diet Tips</h2>
+      <p style="color: #e0f2f1; font-size: 1.15rem; margin-bottom: 0;">
+        Get personalized dietary guidance powered by AI. Enter your health details to receive tailored diet plans and actionable tips that help you achieve your wellness goals—whether it's weight management, muscle gain, or healthy living.
+      </p>
+    </section>
+    <!-- Main Card/Form Section -->
+    <div class="card p-4 shadow-lg" style="width:100%;background:#101214 !important;border-radius:0 0 18px 18px;margin-top:0;color:#fff;box-shadow:0 10px 28px rgba(0,0,0,0.35);">
+      <h4 class="mb-4 text-center" style="color: #fff; font-weight: 600; letter-spacing: 0.5px;">Enter Your Input</h4>
+          <form method="POST">
+            <div class="row g-4">
+              <!-- Left Side Inputs -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="age" class="form-label">Age</label>
+                  <input type="number" name="age" id="age" class="form-control" placeholder="Enter your age" required>
+                </div>
+                <div class="mb-3">
+                  <label for="weight" class="form-label">Weight (kg)</label>
+                  <input type="number" name="weight" id="weight" class="form-control" placeholder="Enter your weight" required>
+                </div>
+                <div class="mb-3">
+                  <label for="gender" class="form-label">Gender</label>
+                  <select name="gender" id="gender" class="form-control" required>
+                    <option value="" disabled selected>Select your gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <!-- Right Side Inputs -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="activity_level" class="form-label">Activity Level</label>
+                  <select name="activity_level" id="activity_level" class="form-control" required>
+                    <option value="" disabled selected>Select your activity level</option>
+                    <option value="Sedentary">Sedentary (little or no exercise)</option>
+                    <option value="Light activity">Light activity (1–3 days/week)</option>
+                    <option value="Moderate">Moderate activity (3–5 days/week)</option>
+                    <option value="Very active">Very active (6–7 days/week)</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="height" class="form-label">Height (cm)</label>
+                  <input type="number" name="height" id="height" class="form-control" placeholder="Enter your height" required>
+                </div>
+                <div class="mb-3">
+                  <label for="goal" class="form-label">Your Health Goal</label>
+                  <div class="input-group">
+                    <input type="text" name="goal" id="goal" class="form-control" placeholder="e.g., Weight loss, muscle gain, diabetes control, etc." required>
+                    <button type="button" id="voiceBtn" class="btn btn-outline-secondary" title="Speak your goal">
+                      <i class="fas fa-microphone"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="text-center mt-4">
+              <button type="submit" class="btn-submit">Get Tips</button>
+            </div>
+          </form>
+          {% if response %}
+            <div class="alert alert-info mt-4">{{ response|safe }}</div>
+          {% endif %}
+          <div class="text-center mt-4">
+            <button class="history-toggle btn-info" type="button" onclick="toggleHistory()" style="background: linear-gradient(135deg, #3c3b3f, #23272b); border: none; padding: 12px 28px; font-weight: 600; border-radius: 30px; color: #fff; margin: 0 auto; display: inline-block; transition: background 0.3s ease-in-out;">
+              <i class="fas fa-history"></i> View Chat History
+            </button>
+          </div>
+          <div class="chat-history" id="chatHistory" style="display: none; margin-top: 20px; padding: 20px; background: #23272b; border-radius: 10px; max-width: 700px; margin-left: auto; margin-right: auto;">
+            <div class="history-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+              <h5 class="history-title" style="color: #20c997; margin: 0;">Diet Tips Chat History</h5>
+              <button class="clear-history" onclick="clearHistory()" style="background: none; border: none; color: #dc3545; cursor: pointer; font-size: 1rem; padding: 5px 10px; border-radius: 15px; transition: all 0.3s ease;">
+                <i class="fas fa-trash"></i> Clear History
+              </button>
+            </div>
+            {% if chat_history and chat_history|length > 0 %}
+              {% for chat in chat_history %}
+                <div class="chat-message" style="margin-bottom: 15px; padding: 10px; background: #181a1b; border-radius: 8px;">
+                  <div style="font-weight:600; color:#20c997; margin-bottom:4px;">
+                    {% if chat.message.startswith('User:') %}You:{% elif chat.message.startswith('AI:') %}AI:{% endif %}
+                  </div>
+                  <div style="white-space:pre-wrap; color: #fff;">
+                    {% if chat.message.startswith('User:') %}
+                      {{ chat.message.replace('User:', '').strip() }}
+                    {% elif chat.message.startswith('AI:') %}
+                      {{ chat.message.replace('AI:', '').strip() | markdown }}
+                    {% else %}
+                      {{ chat.message }}
+                    {% endif %}
+                  </div>
+                  <div style="color: #888; font-size: 0.8em; margin-top: 5px;">
+                    {{ chat.timestamp.strftime('%Y-%m-%d %I:%M %p') }}
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <div style="color: #fff; font-style: italic;">No chat history for Diet Tips yet.</div>
+            {% endif %}
+          </div>
+        </div>
+    <!-- End Main Card/Form Section -->
+      </div>
+    </div>
+
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Chat History Toggle Script -->
+    <script>
+    function toggleHistory() {
+      const historyDiv = document.getElementById('chatHistory');
+      const button = document.querySelector('.history-toggle');
+      if (historyDiv.style.display === 'none') {
+        historyDiv.style.display = 'block';
+        button.classList.add('active');
+        button.textContent = 'Hide Chat History';
+        button.insertAdjacentHTML('afterbegin', '<i class="fas fa-history"></i> ');
+      } else {
+        historyDiv.style.display = 'none';
+        button.classList.remove('active');
+        button.textContent = 'View Chat History';
+        button.insertAdjacentHTML('afterbegin', '<i class="fas fa-history"></i> ');
+      }
+    }
+
+    function clearHistory() {
+      if (confirm('Are you sure you want to clear your diet tips chat history?')) {
+        fetch('/clear_chat_history', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: 'section=diet_tips'
+        }).then(() => {
+          window.location.reload();
+        });
+      }
+    }
+    </script>
+
+    <!-- Voice Script -->
+    <script>
+      const voiceBtn = document.getElementById('voiceBtn');
+      const goalInput = document.getElementById('goal');
+      const recognition = 'webkitSpeechRecognition' in window ? new webkitSpeechRecognition() : null;
+
+      if (recognition) {
+        recognition.lang = 'en-US';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        voiceBtn.addEventListener('click', () => {
+          recognition.start();
+        });
+
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          goalInput.value = transcript;
+        };
+
+        recognition.onerror = (event) => {
+          alert('🎤 Voice recognition failed: ' + event.error);
+        };
+      } else {
+        voiceBtn.disabled = true;
+        voiceBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+        voiceBtn.title = "Speech recognition not supported in this browser.";
+      }
+    </script>
+
+{% endblock %}

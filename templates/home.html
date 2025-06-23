@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block title %}Home | AI Health Assistant{% endblock %}
+{% block content %}
+<!-- Hero Section with Gradient Background and Glassmorphism Card -->
+<div class="bg-dark position-relative d-flex align-items-center justify-content-center" style="min-height: 420px;">
+    <div class="container position-relative z-2">
+        <div class="hero-glass-card mx-auto p-5 text-center mb-4" style="background:#1a233a;">
+            <h1 class="display-3 fw-bold mb-3 text-gradient">Welcome to AI Health Assistant</h1>
+            <p class="lead mb-4">Your smart health companion for symptom checking, diet advice, emergency support, and more. Experience healthcare made simple, accessible, and intelligent.</p>
+            <a href="{{ url_for('health_chat') }}" class="btn btn-lg btn-gradient shadow px-5 py-2 me-2"><i class="bi bi-chat-dots me-2"></i>Start a Health Chat</a>
+        </div>
+    </div>
+    <!-- Abstract SVG Shape for Depth -->
+    <svg class="hero-svg-bg position-absolute top-0 start-0 w-100 h-100" viewBox="0 0 1440 420" fill="none" xmlns="http://www.w3.org/2000/svg" style="z-index:1;"><path fill="#0d6efd" fill-opacity="0.12" d="M0,160 C480,320 960,0 1440,160 L1440,420 L0,420 Z"></path></svg>
+</div>
+<!-- SVG Divider -->
+<div class="w-100 bg-dark" style="margin-top:-60px;">
+    <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:60px;display:block;"><path fill="#181a1b" d="M0,0 C480,100 960,0 1440,100 L1440,100 L0,100 Z"></path></svg>
+</div>
+
+<h2 id="services" class="text-center fw-bold mb-5 mt-5 display-5 text-gradient">Our Services</h2>
+<div class="container bg-dark rounded-4 py-4">
+    <div class="row g-4 justify-content-center mb-5">
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div class="service-card h-100 text-center p-4 animate-fadein" style="background:#1a233a;">
+                <i class="bi bi-thermometer-half display-4 mb-3"></i>
+                <h5 class="card-title fw-bold mb-2">Symptom Checker <span class="badge bg-warning text-dark ms-1">AI</span></h5>
+                <p class="card-text mb-3">AI-powered analysis for your symptoms to guide your next steps.</p>
+                <a href="{{ url_for('symptom_checker') }}" class="btn btn-outline-light rounded-pill px-4">Check Now</a>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div class="service-card h-100 text-center p-4 animate-fadein" style="background:#1a233a;animation-delay:0.1s;">
+                <i class="bi bi-egg-fried display-4 mb-3"></i>
+                <h5 class="card-title fw-bold mb-2">Diet Tips</h5>
+                <p class="card-text mb-3">Personalized dietary advice based on your health goals and needs.</p>
+                <a href="{{ url_for('diet_tips') }}" class="btn btn-outline-light rounded-pill px-4">Get Tips</a>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div class="service-card h-100 text-center p-4 animate-fadein" style="background:#1a233a;animation-delay:0.2s;">
+                <i class="bi bi-chat-dots display-4 mb-3"></i>
+                <h5 class="card-title fw-bold mb-2">Health Chat</h5>
+                <p class="card-text mb-3">Chat with our AI for instant responses to your health-related queries.</p>
+                <a href="{{ url_for('health_chat') }}" class="btn btn-outline-light rounded-pill px-4">Start Chat</a>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div class="service-card h-100 text-center p-4 animate-fadein" style="background:#1a233a;animation-delay:0.3s;">
+                <i class="bi bi-exclamation-triangle display-4 mb-3"></i>
+                <h5 class="card-title fw-bold mb-2">Emergency Resources</h5>
+                <p class="card-text mb-3">Get instant access to emergency tools and vital health resources.</p>
+                <a href="{{ url_for('emergency') }}" class="btn btn-outline-light rounded-pill px-4">View Resources</a>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div class="service-card h-100 text-center p-4 animate-fadein" style="background:#1a233a;animation-delay:0.4s;">
+                <i class="bi bi-droplet-half display-4 mb-3"></i>
+                <h5 class="card-title fw-bold mb-2">Blood Donor <span class="badge bg-danger ms-1">New</span></h5>
+                <p class="card-text mb-3">Find and register as a blood donor, or search for donors in your area.</p>
+                <a href="{{ url_for('blood_donor') }}" class="btn btn-outline-light rounded-pill px-4">Find Donors</a>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div class="service-card h-100 text-center p-4 animate-fadein" style="background:#1a233a;animation-delay:0.5s;">
+                <i class="bi bi-activity display-4 mb-3"></i>
+                <h5 class="card-title fw-bold mb-2">BMI Calculator</h5>
+                <p class="card-text mb-3">Calculate your Body Mass Index (BMI) to assess your weight status.</p>
+                <a href="{{ url_for('bmi_calculator') }}" class="btn btn-outline-light rounded-pill px-4">Calculate BMI</a>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div class="service-card h-100 text-center p-4 animate-fadein" style="background:#1a233a;animation-delay:0.6s;">
+                <i class="bi bi-heart-pulse display-4 mb-3"></i>
+                <h5 class="card-title fw-bold mb-2">Exercise</h5>
+                <p class="card-text mb-3">Explore exercise tips and routines for a healthier lifestyle.</p>
+                <a href="{{ url_for('exercise_page') }}" class="btn btn-outline-light rounded-pill px-4">Get Exercises</a>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div class="service-card h-100 text-center p-4 animate-fadein" style="background:#1a233a;animation-delay:0.7s;">
+                <i class="bi bi-alarm display-4 mb-3"></i>
+                <h5 class="card-title fw-bold mb-2">Pill Reminder <span class="badge bg-info text-dark ms-1">New</span></h5>
+                <p class="card-text mb-3">Set up medication reminders and never miss a dose. Get notified at the right time!</p>
+                <a href="{{ url_for('pill_reminder') }}" class="btn btn-outline-light rounded-pill px-4">Set Reminder</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Our Services section -->
+
+<h2 class="text-center fw-bold mb-4 mt-5 display-5 text-gradient">App Features</h2>
+<div class="container mb-5 bg-dark rounded-4 py-4">
+  <div class="row g-4 justify-content-center">
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="card shadow-sm border-0 bg-dark text-white">
+        <img src="{{ url_for('static', filename='uploads/download.jpg') }}" class="img-fluid rounded mt-2" alt="Symptom Checker">
+        <div class="card-body text-center">
+          <p class="card-text">Symptom Checker</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="card shadow-sm border-0 bg-dark text-white">
+        <img src="{{ url_for('static', filename='uploads/gettyimages-475621112-612x612.jpg') }}" class="img-fluid rounded mt-2" alt="Diet Tips">
+        <div class="card-body text-center">
+          <p class="card-text">Diet Tips</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="card shadow-sm border-0 bg-dark text-white">
+        <img src="{{ url_for('static', filename='uploads/istockphoto-2187046189-612x612.webp') }}" class="img-fluid rounded mt-2" alt="Health Chat">
+        <div class="card-body text-center">
+          <p class="card-text">Health Chat</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="card shadow-sm border-0 bg-dark text-white">
+        <img src="{{ url_for('static', filename='uploads/gettyimages-458635887-612x612.jpg') }}" class="img-fluid rounded mt-2" alt="Emergency Resources">
+        <div class="card-body text-center">
+          <p class="card-text">Emergency Resources</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="card shadow-sm border-0 bg-dark text-white">
+        <img src="{{ url_for('static', filename='uploads/gettyimages-458559027-612x612.jpg') }}" class="img-fluid rounded mt-2" alt="Blood Donor">
+        <div class="card-body text-center">
+          <p class="card-text">Blood Donor</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-3">
+      <div class="card shadow-sm border-0 bg-dark text-white">
+        <img src="{{ url_for('static', filename='uploads/fried-salmon-steak-cooked-green-600nw-2489026949.webp') }}" class="img-fluid rounded mt-2" alt="BMI Calculator">
+        <div class="card-body text-center">
+          <p class="card-text">BMI Calculator</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} 

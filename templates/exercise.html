@@ -1,0 +1,567 @@
+{% extends 'base.html' %}
+{% block title %}Workout & Fitness Assistant{% endblock %}
+{% block content %}
+<style>
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.workout-bg {
+  background: #181a1b;
+  min-height: 100vh;
+  padding: 0 0 60px 0;
+}
+
+.top-section-workout {
+  background: #1a233a !important;
+  padding: 48px 20px 28px 20px;
+  border-radius: 18px 18px 0 0;
+  margin: 100px auto 0 auto;
+  width: 95%;
+  max-width: 800px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  margin-bottom: 0;
+}
+
+.top-section-workout h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.top-section-workout p {
+  font-size: 1.13rem;
+  color: #e3e3fa;
+  margin-bottom: 0;
+}
+
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 24px auto;
+  background: #22243a;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  border-radius: 0 0 18px 18px;
+  z-index: 100;
+  padding: 0.5rem;
+}
+
+.sticky-nav .nav {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+
+.sticky-nav .nav-link {
+  color: #b2aaff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 18px 18px 0 0;
+  padding: 14px 36px;
+  background: #23272b;
+  transition: all 0.3s ease;
+}
+
+.sticky-nav .nav-link.active, 
+.sticky-nav .nav-link:focus {
+  background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+  color: #23272b;
+  box-shadow: 0 4px 16px rgba(67, 233, 123, 0.13);
+  transform: translateY(-2px);
+}
+
+.sticky-nav .nav-link.tab-muscle.active {
+  background: linear-gradient(90deg, #f7971e 0%, #ffd200 100%);
+  color: #23272b;
+}
+
+.sticky-nav .nav-link.tab-yoga.active {
+  background: linear-gradient(90deg, #8e2de2 0%, #4a00e0 100%);
+  color: #fff;
+}
+
+.workout-tab-content {
+  width: 95%;
+  max-width: 800px;
+  margin: 20px auto;
+  background: #1a233a !important;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+  padding: 40px 30px;
+  animation: fadeIn 0.4s;
+  color: #fff;
+}
+
+.exercise-card {
+  background: #1a233a !important;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(25, 118, 210, 0.13);
+  margin: 40px auto;
+  padding: 32px;
+  color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 800px;
+}
+
+.exercise-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(25, 118, 210, 0.2);
+}
+
+.exercise-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.exercise-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #90caf9;
+  text-align: center;
+  display: block;
+  margin-bottom: 0;
+}
+
+.difficulty-badge, .difficulty-beginner, .difficulty-intermediate, .difficulty-advanced { display: none !important; }
+
+.video-container {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.10);
+  margin-bottom: 20px;
+}
+
+.exercise-video {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border: none;
+  background: #000;
+}
+
+.video-controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.btn-control {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-start {
+  background: linear-gradient(to right, #43e97b, #38f9d7);
+  color: #23272b;
+}
+
+.btn-stop {
+  background: linear-gradient(to right, #ff416c, #ff4b2b);
+  color: white;
+}
+
+.btn-control:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.exercise-info {
+  background: #1e2128;
+  border-radius: 12px;
+  padding: 25px;
+}
+
+.exercise-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin: 25px 0;
+}
+
+.timer-box {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #ffe082;
+  background: #222b3a;
+  border-radius: 12px;
+  padding: 12px 36px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+}
+
+.rest-box {
+  color: #20c997;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.exercise-explanation {
+  color: #b2aaff;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 18px 0 10px 0;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border-left: 4px solid #8e2de2;
+  text-align: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.exercise-details {
+  display: flex;
+  gap: 20px;
+  color: #ffe082;
+  font-size: 1.05rem;
+  margin-top: 15px;
+}
+
+.exercise-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+@media (max-width: 900px) {
+  .sticky-nav .nav-link {
+    font-size: 1rem;
+    padding: 10px 18px;
+  }
+  
+  .top-section-workout, 
+  .sticky-nav, 
+  .workout-tab-content {
+    width: 99%;
+    max-width: 99vw;
+  }
+  
+  .exercise-card {
+    padding: 20px;
+  }
+
+  .exercise-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .exercise-details {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+</style>
+
+<div class="container py-5">
+  <div class="workout-bg">
+    <section class="top-section-workout">
+      <h2>🏋️‍♂️ Workout & Fitness Assistant</h2>
+      <p>
+        Your AI-powered workout companion! Choose a category below to explore exercises for common fitness, muscle building, or yoga. Each exercise includes a demonstration, explanation, and a built-in timer to help you stay on track. Start your fitness journey now!
+      </p>
+    </section>
+
+    <div class="sticky-nav">
+      <nav class="nav nav-pills nav-fill">
+        <a class="nav-link tab-common active" id="nav-common" href="#" onclick="showTab('common'); return false;">🟢 Common Exercises</a>
+        <a class="nav-link tab-muscle" id="nav-muscle" href="#" onclick="showTab('muscle'); return false;">💪 Muscle Building</a>
+        <a class="nav-link tab-yoga" id="nav-yoga" href="#" onclick="showTab('yoga'); return false;">🧘 Yoga</a>
+      </nav>
+    </div>
+
+    <div class="workout-tab-content">
+      <div id="common" class="workout-tab-pane">
+        {% for ex in exercises if ex.category == 'common' %}
+        <div class="exercise-card">
+          <div class="exercise-header">
+            <div class="exercise-title">
+              🤸 {{ ex.title }}
+            </div>
+          </div>
+          <div class="video-container">
+            <iframe class="exercise-video" src="{{ ex.video }}" title="{{ ex.title }} video" allowfullscreen></iframe>
+            <div class="video-controls">
+              <button class="btn-control btn-start" onclick="startExercise(this, {{ ex.duration }}, {{ ex.rest }})">▶️ Start Timer</button>
+              <button class="btn-control btn-stop" onclick="stopExercise(this)">⏹️ Stop</button>
+            </div>
+          </div>
+          <div class="exercise-explanation">📝 {{ ex.explanation }}</div>
+          <div class="exercise-info">
+            <div class="exercise-controls">
+              <div class="timer-box" style="display:none;">00:00</div>
+              <div class="rest-box" style="display:none;">Rest Time: <span class="rest-timer"></span> sec</div>
+            </div>
+            <div class="exercise-details">
+              <div class="exercise-detail-item">
+                <span>⏱️</span> {{ ex.duration }} seconds
+              </div>
+              <div class="exercise-detail-item">
+                <span>✨</span> {{ ex.purpose }}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div id="muscle" class="workout-tab-pane" style="display:none;">
+        {% for ex in exercises if ex.category == 'muscle' %}
+        <div class="exercise-card">
+          <div class="exercise-header">
+            <div class="exercise-title">
+              💪 {{ ex.title }}
+            </div>
+          </div>
+          <div class="video-container">
+            <iframe class="exercise-video" src="{{ ex.video }}" title="{{ ex.title }} video" allowfullscreen></iframe>
+            <div class="video-controls">
+              <button class="btn-control btn-start" onclick="startExercise(this, {{ ex.duration }}, {{ ex.rest }})">▶️ Start Timer</button>
+              <button class="btn-control btn-stop" onclick="stopExercise(this)">⏹️ Stop</button>
+            </div>
+          </div>
+          <div class="exercise-explanation">📝 {{ ex.explanation }}</div>
+          <div class="exercise-info">
+            <div class="exercise-controls">
+              <div class="timer-box" style="display:none;">00:00</div>
+              <div class="rest-box" style="display:none;">Rest Time: <span class="rest-timer"></span> sec</div>
+            </div>
+            <div class="exercise-details">
+              <div class="exercise-detail-item">
+                <span>⏱️</span> {{ ex.duration }} seconds
+              </div>
+              <div class="exercise-detail-item">
+                <span>✨</span> {{ ex.purpose }}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div id="yoga" class="workout-tab-pane" style="display:none;">
+        {% for ex in exercises if ex.category == 'yoga' %}
+        <div class="exercise-card">
+          <div class="exercise-header">
+            <div class="exercise-title">
+              🧘 {{ ex.title }}
+            </div>
+          </div>
+          <div class="video-container">
+            <iframe class="exercise-video" src="{{ ex.video }}" title="{{ ex.title }} video" allowfullscreen></iframe>
+            <div class="video-controls">
+              <button class="btn-control btn-start" onclick="startExercise(this, {{ ex.duration }}, {{ ex.rest }})">▶️ Start Timer</button>
+              <button class="btn-control btn-stop" onclick="stopExercise(this)">⏹️ Stop</button>
+            </div>
+          </div>
+          <div class="exercise-explanation">📝 {{ ex.explanation }}</div>
+          <div class="exercise-info">
+            <div class="exercise-controls">
+              <div class="timer-box" style="display:none;">00:00</div>
+              <div class="rest-box" style="display:none;">Rest Time: <span class="rest-timer"></span> sec</div>
+            </div>
+            <div class="exercise-details">
+              <div class="exercise-detail-item">
+                <span>⏱️</span> {{ ex.duration }} seconds
+              </div>
+              <div class="exercise-detail-item">
+                <span>✨</span> {{ ex.purpose }}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const allExercises = {{ exercises|tojson }};
+let activeTimers = {};
+
+function showTab(category) {
+  // Stop all active timers when switching tabs
+  Object.values(activeTimers).forEach(timer => clearInterval(timer));
+  activeTimers = {};
+
+  // Remove active class from all nav links
+  document.querySelectorAll('.sticky-nav .nav-link').forEach(link => link.classList.remove('active'));
+  // Add active class to the selected nav link
+  document.getElementById('nav-' + category).classList.add('active');
+
+  // Show/hide appropriate tab content
+  document.querySelectorAll('.workout-tab-pane').forEach(pane => {
+    pane.style.display = 'none';
+  });
+  document.getElementById(category).style.display = 'block';
+}
+
+function startExercise(button, duration, rest) {
+  const card = button.closest('.exercise-card');
+  const timerBox = card.querySelector('.timer-box');
+  const restBox = card.querySelector('.rest-box');
+  const exerciseId = card.querySelector('.exercise-title').textContent.trim();
+
+  // Stop any existing timer for this exercise
+  if (activeTimers[exerciseId]) {
+    clearInterval(activeTimers[exerciseId]);
+  }
+
+  let timer = duration;
+  timerBox.style.display = 'block';
+  restBox.style.display = 'none';
+  timerBox.textContent = timer + ' sec';
+
+  activeTimers[exerciseId] = setInterval(() => {
+    timer--;
+    timerBox.textContent = timer + ' sec';
+    
+    if (timer <= 0) {
+      clearInterval(activeTimers[exerciseId]);
+      timerBox.textContent = 'Done!';
+      restBox.style.display = 'block';
+      let restTimer = rest;
+      restBox.querySelector('.rest-timer').textContent = restTimer;
+
+      // Log exercise completion to server
+      fetch('/log_exercise', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ exercise_title: exerciseId, duration: duration })
+      })
+      .then(res => {
+        if (res.status === 401 || res.status === 403) {
+          throw new Error('You must be logged in to log exercises. Please log in again.');
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (data.success) {
+          console.log('Exercise logged successfully:', data.message);
+          // Show a subtle notification instead of alert
+          const notification = document.createElement('div');
+          notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+            color: #23272b;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(67, 233, 123, 0.3);
+            animation: slideIn 0.3s ease;
+          `;
+          notification.textContent = '✅ Exercise logged!';
+          document.body.appendChild(notification);
+          
+          // Remove notification after 3 seconds
+          setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => document.body.removeChild(notification), 300);
+          }, 3000);
+        } else {
+          throw new Error(data.error || 'Failed to log exercise');
+        }
+      })
+      .catch(error => {
+        // Show error notification
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 100%);
+          color: white;
+          padding: 12px 20px;
+          border-radius: 8px;
+          font-weight: 600;
+          z-index: 1000;
+          box-shadow: 0 4px 12px rgba(255, 65, 108, 0.3);
+          animation: slideIn 0.3s ease;
+        `;
+        notification.textContent = '❌ ' + error.message;
+        document.body.appendChild(notification);
+        
+        // Remove notification after 3 seconds
+        setTimeout(() => {
+          notification.style.animation = 'slideOut 0.3s ease';
+          setTimeout(() => document.body.removeChild(notification), 300);
+        }, 3000);
+      });
+
+      activeTimers[exerciseId] = setInterval(() => {
+        restTimer--;
+        restBox.querySelector('.rest-timer').textContent = restTimer;
+        
+        if (restTimer <= 0) {
+          clearInterval(activeTimers[exerciseId]);
+          restBox.textContent = 'Ready for next!';
+        }
+      }, 1000);
+    }
+  }, 1000);
+}
+
+function stopExercise(button) {
+  const card = button.closest('.exercise-card');
+  const exerciseId = card.querySelector('.exercise-title').textContent.trim();
+  
+  if (activeTimers[exerciseId]) {
+    clearInterval(activeTimers[exerciseId]);
+    delete activeTimers[exerciseId];
+  }
+
+  const timerBox = card.querySelector('.timer-box');
+  const restBox = card.querySelector('.rest-box');
+  
+  timerBox.style.display = 'none';
+  restBox.style.display = 'none';
+}
+
+// On page load, show common exercises
+showTab('common');
+</script>
+{% endblock %} 
